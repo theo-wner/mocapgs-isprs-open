@@ -1,0 +1,175 @@
+%% 
+%% Copyright 2019-2024 Elsevier Ltd
+%% 
+%% This file is part of the 'CAS Bundle'.
+%% --------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.3c of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'CAS Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for cas-dc documentclass for 
+%% double column output.
+
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[numbers]{natbib}
+
+%% --------------------------------
+%% | Own Commands                 |
+%% --------------------------------
+\usepackage{newtxtt}
+\newcommand{\Vector}[1]{{\ensuremath{\textbf{\textit{#1}}}}}
+\newcommand{\Matrix}[1]{{\ensuremath{\textbf{\texttt{#1}}}}}
+\newcommand{\TMatrix}[3]{{^{\mathrm{#1}}\Matrix{#2}_{\mathrm{#3}}}}
+\newcommand{\Quat}[1]{{\ensuremath{\textbf{#1}}}}
+\newcommand{\DQuat}[1]{{\ensuremath{\hat{\Quat{#1}}}}}
+\newcommand{\DVector}[1]{{\ensuremath{\hat{\Vector{#1}}}}}
+\newcommand{\trans}{\ensuremath{^\top}}
+
+% Author macros
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+% Short title
+\shorttitle{MocapGS: Robust Online 3D Mapping Using Motion Capture and Gaussian Splatting}    
+
+% Short author
+\shortauthors{Theodor Kapler et al.}  
+
+% Main title of the paper
+\title [mode = title]{MocapGS: Robust Online 3D Mapping Using Motion Capture and Gaussian Splatting}  
+
+% Authors
+\author[1]{Theodor Kapler}%[<options>]
+\cormark[1]
+\ead{theodor.kapler@student.kit.edu}
+\affiliation[1]{organization={Institute of Photogrammetry and Remote Sensing, Karlsruhe Institute of Technology},
+            addressline={Englerstr. 7}, 
+            city={Karlsruhe},
+            postcode={76131}, 
+            state={Baden-Württemberg},
+            country={Germany}}
+
+\author[1]{Markus Hillemann}[orcid=0000-0002-8906-0450]
+\ead{markus.hillemann@kit.edu}
+
+\author[1]{Robert Langendörfer}
+\ead{robert.langendoerfer@kit.edu}
+
+\author[1]{Markus Ulrich}[orcid=0000-0001-8457-5554]
+\ead{markus.ulrich@kit.edu}
+
+% Corresponding author text
+\cortext[1]{Corresponding author}
+
+% Abstract
+\begin{abstract}
+Image-based online 3D mapping allows scenes to be reconstructed incrementally, with new images continuously integrated to provide direct feedback on the reconstructed scene. However, many online reconstruction methods, typically SLAM-applications, rely on image-based camera pose estimation, which is prone to drift and loop-closure errors. To address this issue, we present MocapGS, an online 3D reconstruction method that directly integrates accurate camera poses obtained from a Motion Capture system directly into a 3D Gaussian Splatting-based reconstruction pipeline. By decoupling pose estimation from scene reconstruction, MocapGS leverages externally provided, metrically accurate camera poses to improve robustness and global consistency. To enable this integration, a complete workflow is developed, including temporal synchronization between the camera and the Motion Capture system, camera calibration, hand-eye calibration, and online reconstruction from sequential image-pose pairs. The proposed method is evaluated on multiple datasets and compared to methods estimating poses from image data. Experimental results show that MocapGS yields more stable camera trajectories and improved reconstruction quality compared to such methods, particularly with respect to global consistency. The results demonstrate that Motion Capture can serve as a reliable primary source of camera poses for online 3D reconstruction, highlighting the potential of Motion Capture-driven reconstruction pipelines.
+\end{abstract}
+
+% Keywords
+\begin{keywords}
+Online 3D Reconstruction \sep Motion Capture \sep Gaussian Splatting \sep Time Synchronization \sep Camera Calibration \sep Hand-eye Calibration
+\end{keywords}
+
+\maketitle
+
+% Main text
+\section{Introduction}\label{sec:introduction}
+Image-based 3D reconstruction has become a fundamental technology in computer vision, photogrammetry, and robotics, with applications ranging from industrial inspection \cite{steger_machine_2018} over autonomous driving \cite{behley_efficient_2018} to digital heritage preservation \cite{gomes_3d_2014}. As cameras are inexpensive, flexible, and widely available, image-based approaches remain particularly attractive compared to active sensing modalities.
+
+Classical 3D reconstruction pipelines are predominantly batch-based. Methods such as Structure from Motion (SfM) \cite{schonberger_structure--motion_2016} estimate camera poses, intrinsic parameters, and sparse geometry jointly from a complete set of images, followed by a densification step using Multi-view Stereo (MVS) \cite{schonberger_pixelwise_2016} or learning-based representations, like 3D Gaussian Splatting (3DGS) \cite{kerbl_3d_2023}. While these approaches can achieve good reconstruction quality, they fundamentally require all images to be available in advance. As a consequence, they are unsuitable for scenarios where image data is acquired sequentially and where immediate feedback is desired.
+
+Incremental reconstruction approaches address these issues. Simultaneous Localization and Mapping (SLAM)-methods \cite{cadena_past_2016}  estimate camera poses and scene structure on-the-fly, enabling online operation and continuous map expansion as new images arrive. More recently, learning-based scene representations such as 3DGS have been adapted to online image acquisition \cite{meuleman_--fly_2025}. These methods make it possible to visualize a scene in real-time while it is being reconstructed, providing immediate feedback and enabling adaptive data acquisition.
+
+Despite these advantages, online approaches typically estimate camera poses sequentially from image data alone. As a result, they are prone to drift and loop-closure errors, which can accumulate over time and lead to globally inconsistent reconstructions.
+
+In parallel, Motion Capture (Mocap) systems offer an alternative means of camera pose estimation. By tracking a rigid body with a mounted camera, Mocap systems can provide camera poses with high accuracy and global consistency, independent of visual scene content. However, in the context of 3D reconstruction, such systems are rarely used as the primary source of camera pose retrieval. Instead, they are typically employed for benchmarking, validation, or ground truth generation, leaving their potential for direct integration into online reconstruction pipelines largely unexplored.
+
+This thesis aims to fill this gap by introducing \emph{MocapGS}, a method that integrates accurate camera poses obtained from a Mocap system directly into an online 3D reconstruction pipeline based on 3DGS. To enable this integration, we propose a complete workflow consisting of:
+\begin{enumerate}
+\itemsep=0pt
+\item Temporal Synchronization,
+\item Camera Calibration,
+\item Hand-eye Calibration,
+\item Online 3D Reconstruction, and
+\item 3D Mesh Extraction.
+\end{enumerate}  
+
+The main contributions of this work are threefold. First, we present the proposed workflow for integrating Mocap-based pose estimation into an online 3DGS reconstruction pipeline. Second, we evaluate the accuracy of the temporal synchronization and calibration procedures. Third, we assess the reconstruction quality and compare our approach against standard 3DGS as well as an online method that estimates camera poses solely from image data.
+
+We find that by decoupling pose estimation from scene optimization, MocapGS combines the online visualization and incremental processing capabilities of modern 3DGS-based methods with the robustness and global consistency of Mocap-based camera tracking. 
+
+\section{Related Work}\label{sec:related_work}
+In this section, we summarize the related work regarding 3D reconstruction methods, as well as camera tracking with Mocap.
+\subsection{3D Reconstruction Using Structure from Motion}\label{ssec:related_work:3d_reconstruction_sfm}
+Classical 3D reconstruction pipelines are predominantly batch-based and follow a two-stage processing scheme. In a first stage, SfM is applied to a complete set of images to jointly estimate camera poses, intrinsics, and a sparse 3D point cloud via bundle adjustment.
+
+In a second stage, dense reconstruction is performed using the estimated poses. Traditional photogrammetric methods rely on MVS to densify the sparse reconstruction. Neural Radiance Fields (NeRFs) \cite{mildenhall_nerf_2021}, a more recent learning-based approach, replaces explicit point-based reconstruction with a continuous scene representation, enabling high-quality novel view synthesis. 3DGS adopts a more explicit scene representation based on learned 3D Gaussian ellipsoids, enabling very fast rendering.
+
+While highly accurate, these pipelines share a key limitation: SfM is always required as a preprocessing step and depends on the availability of the full image set. Consequently, such methods are non-incremental and do not support real-time reconstruction or interactive scene exploration.
+
+\subsection{Online 3D Reconstruction}\label{ssec:related_work:online_3d_reconstruction}
+Online 3D reconstruction methods aim to process image data sequentially as it becomes available, without prior knowledge of the full dataset. These approaches typically combine pose estimation and mapping in a single, incremental pipeline.
+
+Classical point-based methods such as SLAM estimate camera poses on-the-fly while incrementally building a map of the environment. More recent learning-based methods extend this idea to neural or hybrid scene representations. Approaches such as MonoGS \cite{matsuki_gaussian_2024}, WildGS-SLAM \cite{zheng_wildgs-slam_2025}, or On-the-fly NVS \cite{meuleman_--fly_2025} enable incremental reconstruction and real-time rendering while estimating camera poses directly from incoming images.
+
+A major advantage of online methods is the ability to visualize the scene in real time and to actively densify under-reconstructed regions. However, pose estimation is sequential and therefore depends on previously estimated poses. As a result, these methods are susceptible to drift and loop-closure errors, which can lead to globally inconsistent reconstructions.
+
+\subsection{Camera Tracking with Motion Capture}\label{ssec:related_work:camera_tracking}
+Mocap systems provide an alternative source of camera pose information. By rigidly mounting a camera to a set of tracked markers, the pose of the camera can be recovered in real-time with high accuracy after hand-eye calibration. Such systems yield globally consistent poses and are not affected by drift or loop-closure failures.
+
+In the literature, Mocap is most commonly used for validation or ground truth generation rather than as the primary source of camera poses for reconstruction \cite{endres_evaluation_2012, sturm_benchmark_2012, shu_mocap2gt_2026}. 
+
+This work is situated at the intersection of online 3D reconstruction and Mocap-based camera tracking. While online 3D reconstruction methods provide real-time feedback and incremental processing, Mocap offers accurate and globally consistent poses. The combination of these complementary properties motivates the approach presented in this work.
+
+\section{Methodology}\label{sec:methodology}
+The following section presents an overview of the methodology employed in this work. It systematically outlines the proposed workflow for enabling online 3D reconstruction with a synchronized and calibrated camera-Mocap system. Figure~\ref{fig:methodology_overview} outlines our proposed workflow, of which every single step is described in detail in the following.
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{figures/methodology_overview.pdf}
+	\caption{XXX}
+	\label{fig:methodology_overview}
+\end{figure*}
+
+\subsection{Definition of a Rigid Body}\label{ssec:methodology:rigid_body}
+To enable camera pose tracking with the Mocap system, we attach a camera rigidly to a fixed set of Mocap markers. These markers define a rigid body that can be tracked by the Mocap system. To maintain the analogy to robotics, in the following, we refer to the rigid body as \emph{tool}. The pose of this tool coordinate system (TCS) being tracked by the Mocap system differs from the pose of the camera coordinate system (CCS), that we are interested in, by an unknown pose $\TMatrix{C}{T}{T}$. The determination of this \emph{}
+
+\subsection{Temporal Synchronization}\label{ssec:methodology:temporal_sync}
+\subsection{Camera Calibration}\label{ssec:methodology:cc}
+\subsection{Hand-eye Calibration}\label{ssec:methodology:hec}
+\subsection{Online 3D Reconstruction}\label{ssec:methodology:online_3d_reconstruction}
+\subsection{3D Mesh Extraction}\label{ssec:methodology:mesh_extraction}
+
+\section{Experiments}\label{sec:experiments}
+
+\section{Discussion}\label{sec:discussion}
+
+\section{Conclusion}\label{sec:conclusion}
+
+% The Appendices part is started with the command \appendix;
+% appendix sections are then done as normal sections
+%\appendix
+
+%% Bibliography style file
+\bibliographystyle{cas-model2-names}
+
+% Bibliography database
+\bibliography{references}
+
+\end{document}
+
