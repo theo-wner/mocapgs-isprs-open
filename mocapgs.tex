@@ -136,18 +136,43 @@ In the literature, Mocap is most commonly used for validation or ground truth ge
 
 This work is situated at the intersection of online 3D reconstruction and Mocap-based camera tracking. While online 3D reconstruction methods provide real-time feedback and incremental processing, Mocap offers accurate and globally consistent poses. The combination of these complementary properties motivates the approach presented in this work.
 
+\section{Notation}\label{sec:notation}
+This work extensively relies on rigid transformations in three-dimensional space. A rigid transformation in $\mathbb{R}^3$ has six degrees of freedom, comprising three rotational and three translational components. Throughout this paper, we refer to such transformations as \emph{poses}.
+
+Following the standard formulation in projective geometry~\cite{hartley_multiple_2004}, poses are represented by homogeneous transformation matrices of the form
+\begin{equation}
+    \Matrix{E} =
+    \begin{pmatrix}
+        \Matrix{R} & \Vector{t} \\
+        \mathbf{0}\trans & 1
+    \end{pmatrix},
+    \quad \Matrix{E} \in \mathbb{R}^{4 \times 4},
+\end{equation}
+where $\Matrix{R} \in \mathbb{R}^{3 \times 3}$ denotes a rotation matrix and $\Vector{t} \in \mathbb{R}^3$ a translation vector. Throughout this paper, bold, capital, monospaced symbols (e.g., $\Matrix{E}$, $\Matrix{T}$) are used to denote homogeneous transformation matrices representing poses.
+
+The mapping from an arbitrary pose parameterization $\Vector{e}$ (e.g. Euler angles) to its associated homogeneous transformation matrix is denoted by $\Matrix{T}(\Vector{e})$.
+
+To describe the relative pose between two coordinate systems, the notation $\TMatrix{A}{T}{B}$ is used. This denotes the pose of coordinate system $\mathrm{B}$ relative to coordinate system $\mathrm{A}$.
+
 \section{Methodology}\label{sec:methodology}
 The following section presents an overview of the methodology employed in this work. It systematically outlines the proposed workflow for enabling online 3D reconstruction with a synchronized and calibrated camera-Mocap system. Figure~\ref{fig:methodology_overview} outlines our proposed workflow, of which every single step is described in detail in the following.
 
 \begin{figure*}
 	\centering
 	\includegraphics[width=\textwidth]{figures/methodology_overview.pdf}
-	\caption{XXX}
+    \caption[Overview of the proposed workflow]{Overview of the proposed workflow. The calibration process yields the latency offset $\Delta t$, the intrinsic parameter vector $\Vector{i}$, as well as the hand-eye pose $\TMatrix{C}{T}{T}$. These quantities then, together with the online acquired images and tool poses $\TMatrix{T}{T}{B}$, enable the 3DGS-based online 3D reconstruction.}
 	\label{fig:methodology_overview}
 \end{figure*}
 
 \subsection{Definition of a Rigid Body}\label{ssec:methodology:rigid_body}
-To enable camera pose tracking with the Mocap system, we attach a camera rigidly to a fixed set of Mocap markers. These markers define a rigid body that can be tracked by the Mocap system. To maintain the analogy to robotics, in the following, we refer to the rigid body as \emph{tool}. The pose of this tool coordinate system (TCS) being tracked by the Mocap system differs from the pose of the camera coordinate system (CCS), that we are interested in, by an unknown pose $\TMatrix{C}{T}{T}$. The determination of this \emph{}
+To enable camera pose tracking with a Mocap system, we attach a camera rigidly to a fixed set of Mocap markers, which is depicted in Figure~\ref{fig:rigid_body}. These markers define a rigid body that can be tracked by the Mocap system. To maintain the analogy to robotics, in the following, we refer to the rigid body as \emph{tool}. The pose of this tool coordinate system (TCS) can continously be tracked by the Mocap system. It differs from the pose of the camera coordinate system (CCS), that we are interested in, by an unknown pose $\TMatrix{C}{T}{T}$, which we call \emph{hand-eye pose}.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\linewidth]{figures/rigid_body.png}
+    \caption{Hand-held rigid body connecting the camera to spatially fixed set of Mocap markers.}
+    \label{fig:rigid_body}
+\end{figure}
 
 \subsection{Temporal Synchronization}\label{ssec:methodology:temporal_sync}
 \subsection{Camera Calibration}\label{ssec:methodology:cc}
