@@ -5,45 +5,45 @@ The style file: cas-model2-names.bst
 Database file #1: references.bib
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--empty pages in behley_efficient_2018
-You've used 14 entries,
+You've used 21 entries,
             2990 wiz_defined-function locations,
-            848 strings with 10630 characters,
-and the built_in function-call counts, 12377 in all, are:
-= -- 1001
-> -- 554
-< -- 8
-+ -- 214
-- -- 196
-* -- 1456
-:= -- 1725
-add.period$ -- 47
-call.type$ -- 14
-change.case$ -- 138
-chr.to.int$ -- 14
-cite$ -- 15
-duplicate$ -- 858
-empty$ -- 821
-format.name$ -- 243
-if$ -- 2372
+            903 strings with 12273 characters,
+and the built_in function-call counts, 16820 in all, are:
+= -- 1393
+> -- 656
+< -- 16
++ -- 260
+- -- 229
+* -- 1898
+:= -- 2351
+add.period$ -- 72
+call.type$ -- 21
+change.case$ -- 184
+chr.to.int$ -- 21
+cite$ -- 22
+duplicate$ -- 1205
+empty$ -- 1178
+format.name$ -- 293
+if$ -- 3250
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 173
-newline$ -- 90
-num.names$ -- 59
-pop$ -- 264
+missing$ -- 234
+newline$ -- 129
+num.names$ -- 87
+pop$ -- 368
 preamble$ -- 1
-purify$ -- 120
+purify$ -- 159
 quote$ -- 0
-skip$ -- 294
+skip$ -- 423
 stack$ -- 0
-substring$ -- 530
-swap$ -- 723
-text.length$ -- 6
+substring$ -- 758
+swap$ -- 958
+text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 123
+type$ -- 183
 warning$ -- 1
-while$ -- 73
+while$ -- 106
 width$ -- 0
-write$ -- 242
+write$ -- 354
 (There was 1 warning)

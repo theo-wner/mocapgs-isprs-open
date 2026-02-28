@@ -115,6 +115,7 @@ We find that by decoupling pose estimation from scene optimization, MocapGS comb
 
 \section{Related Work}\label{sec:related_work}
 In this section, we summarize the related work regarding 3D reconstruction methods, as well as camera tracking with Mocap.
+
 \subsection{3D Reconstruction Using Structure from Motion}\label{ssec:related_work:3d_reconstruction_sfm}
 Classical 3D reconstruction pipelines are predominantly batch-based and follow a two-stage processing scheme. In a first stage, SfM is applied to a complete set of images to jointly estimate camera poses, intrinsics, and a sparse 3D point cloud via bundle adjustment.
 
@@ -155,7 +156,7 @@ The mapping from an arbitrary pose parameterization $\Vector{e}$ (e.g. Euler ang
 To describe the relative pose between two coordinate systems, the notation $\TMatrix{A}{T}{B}$ is used. This denotes the pose of coordinate system $\mathrm{B}$ relative to coordinate system $\mathrm{A}$.
 
 \section{Methodology}\label{sec:methodology}
-The following section presents an overview of the methodology employed in this work. It systematically outlines the proposed workflow for enabling online 3D reconstruction with a synchronized and calibrated camera-Mocap system. Figure~\ref{fig:methodology_overview} outlines our proposed workflow, of which every single step is described in detail in the following.
+This section provides a comprehensive overview of the methodology employed in this work. It systematically describes the proposed workflow for performing online 3D reconstruction using a synchronized and calibrated camera–Mocap system. Figure~\ref{fig:methodology_overview} illustrates the complete pipeline. Each component of the workflow is explained in detail throughout the subsequent sections.
 
 \begin{figure*}
 	\centering
@@ -175,12 +176,131 @@ To enable camera pose tracking with a Mocap system, we attach a camera rigidly t
 \end{figure}
 
 \subsection{Temporal Synchronization}\label{ssec:methodology:temporal_sync}
+To ensure temporally matching image-pose pairs, it is essential to synchronize the camera and the Mocap system precisely within the employed computer system. In general, such synchronization can be achieved using either hardware-based or software-based triggering mechanisms. To avoid the additional complexity and overhead of dedicated trigger cabling, a software-based synchronization approach is adopted in this work. 
+
+Our goal therefore is to determine the latency difference $\Delta t$ between the camera and the Mocap system that arises on the workstation connected to both systems. To achieve this, we define an event that is temporally well localized and observable by both the camera and the Mocap system. By measuring the arrival times of this event on the workstation, the latency difference $\Delta t$ can be determined.
+
+Common synchronization events for heterogeneous sensor setups include LED flashes or abrupt motions. However, the temporal resolution of such events is fundamentally limited by the camera frame rate, as they can typically only be detected as present or absent within individual image frames. This limits the achievable temporal precision.
+
+To overcome this limitation, we instead exploit the continuous vertical motion of a Mocap marker as a synchronization signal. The marker's position is directly available from the Mocap data and can also be reliably segmented in the camera stream. From both modalities, we extract time series describing the marker's vertical movement: the vertical coordinate from the Mocap system and the row coordinate of the segmented marker center in the image sequence. We then fit a cubic spline to each time series to obtain a smooth, continuous representation of the motion. By determining the local maxima of the interpolated trajectories, we estimate the precise time points at which the marker reaches its maximum height with sub-frame accuracy. These time instants are subsequently used as high-precision synchronization events.
+
 \subsection{Camera Calibration}\label{ssec:methodology:cc}
+After temporally synchronizing the two systems, the camera calibration is performed. This involves estimating the camera's intrinsic parameter vector $\Vector{i}$, as well as the extrinsic parameters for each calibration image $\Vector{e}_i$. We perform camera calibration using multiple images of a checkerboard, which defines a world coordinate system (WCS). The extrinsic parameters $\Vector{e}_i$ to be estimated for each image describe the pose of the WCS relative to the CCS, so the corresponding homogenous transform is denoted as $\left(\TMatrix{C}{T}{W}\right)_i=\Matrix{T}\left(\Vector{e}_i\right)$. Our camera calibration procedure is based on OpenCV~\cite{bradski_g_opencv_2000} and internally consists of an initial parameter estimation followed by a nonlinear refinement.
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{figures/transformations.pdf}
+    \caption[]{Depiction of our MocapGS setup: The capture volume is depicted by the cuboid with the Mocap tracking cameras at the top. Left shows the relevant coordinate systems and right the relevant transformations between them.}
+	\label{fig:transformations}
+\end{figure*}
+
+\paragraph{Initial Parameter Estimation.}
+For estimating initial parameters, the method of Zhang~\cite{zhang_flexible_2000} is used. Zhang models the projection of a 3D point in the WCS onto the 2D Image Coordinate System (ICS) through the pinhole camera. This allows for a linear model formulation using homogenous coordinates. The model parameters, namely the intrinsic parameters of the pinhole camera $\Vector{i} = \left(f_x, f_y, c_x, c_y\right)$ and the extrinsic parameters of each image $\Vector{e}_i$, can then linearly be determined.
+
+\paragraph{Nonlinear Refinemant.}
+In the following stage, the linearly estimated parameters are refined via nonlinear optimization. Therefore, the camera model is not constrained to linearity and can thus be extended to incorporate lens distortions. We choose a polynomial camera model using two radial distortion coefficients $K_1$ and $K_2$ and two decentering distortion coefficients $P_1$ and $P_2$. 
+
+Collecting all parameters, we define the vector
+\begin{equation}
+    \boldsymbol{\theta} = \left(f_x, f_y, c_x, c_y, K_1, K_2, P_1, P_2, \Vector{e}_1, \dots, \Vector{e}_{n_o}\right),
+\end{equation}
+which contains all unknowns to be optimized. The distortion parameters $K_1, K_2, P_1$, and $P_2$ are typically small, so we assume initial values of zero. We can now define the residual function
+\begin{equation}
+    \label{eq:repr_error_ics}
+    d(\boldsymbol{\theta}) = \sum_{k=1}^{n_o} \sum_{j=1}^{n_m}
+        \left\| \Vector{m}_{j,k} - \boldsymbol{\pi}\!\left( \Vector{M}_j, \boldsymbol{\theta} \right) \right\|_2^2 
+        \;\longrightarrow\; \mathrm{min},
+\end{equation}
+where $\Vector{m}_{j,k}$ denotes the observed 2D ICS coordinate of the $j$-th corner in the $k$-th image. $\Vector{M}_j$ denotes the corresponding 3D WCS coordinate, which is projected into the ICS with the projection $\boldsymbol{\pi}$. The function $d(\boldsymbol{\theta})$ is commonly referred to as the reprojection error, which we minimize using the Levenberg-Marquardt method~\cite{marquardt_algorithm_1963}.
+
 \subsection{Hand-eye Calibration}\label{ssec:methodology:hec}
+During the acquisition of the calibration dataset, we not only capture calibration images but also record the corresponding tool pose from the Mocap system for each image, synchronized via $\Delta t$. This allows us to perform a hand-eye calibration.
+
+Hand-eye calibration refers to the determination of the relative pose between a robot's end effector (tool) and a camera that is rigidly mounted to it~\cite{daniilidis_hand-eye_1999}. Establishing this relationship allows observations made in the CCS to be transformed into the TCS and subsequently into the robot base coordinate system (BCS).
+
+In our case, we want to use hand-eye calbration to estimate the relative pose bewtween the CCS and the TCS, which can be tracked with the Mocap system. This hand-eye pose $\TMatrix{C}{T}{T}$ then allows the tool poses to be corrected, retrieving the camera pose which can then be used for the online 3D reconstruction. Figure~\ref{fig:transformations} illustrates the relevant coordinate systems and transformations in this context. As for the camera calibration, our hand-eye calibration procedure is based on OpenCV and consists of an initial parameter estimation followed by a nonlinear refinement.
+
+\paragraph{Initial Parameter Estimation.}
+The linear approach for estimating initial parameters is based on solving the fundamental equation
+\begin{equation}
+    \label{eq:hec_basic}
+    \Matrix{A}\Matrix{X} = \Matrix{X}\Matrix{B}
+\end{equation}
+for the hand-eye pose $\Matrix{X}=\TMatrix{C}{T}{T}$. \Matrix{A} represents the known motion of the tool between two tool poses $\left(\TMatrix{T}{T}{B}\right)_i$ and $\left(\TMatrix{T}{T}{B}\right)_j$, which are obtained from the Mocap system. \Matrix{B} represents the corresponding known motion between two camera poses $\left(\TMatrix{C}{T}{W}\right)_i$ and $\left(\TMatrix{C}{T}{W}\right)_j$, which are obtained by the preceding camera calibration.
+
+Several methods exist to solve Equation~\ref{eq:hec_basic}. We choose the approach proposed by Daniilidis~\cite{daniilidis_hand-eye_1999}, which uses dual quaternions to represent poses.
+
+For the following nonlinear refinement, we also need an initial estimate of the base-world pose $\Matrix{Y}=\TMatrix{W}{T}{B}$. A reasonable initialization for $\Matrix{Y}$ can be derived by a single pair of tool pose and camera pose using
+\begin{equation}
+    \Matrix{Y} = \left(\TMatrix{C}{T}{W}\right)_i^{-1}\Matrix{X}\left(\TMatrix{T}{T}{B}\right)_i,
+\end{equation}
+which can be seen in Figure~\ref{fig:transformations}.
+
+\paragraph{Nonlinear Refinement}
+As for the camera calibration, we adopt a method that minimizes a reprojection error. In contrast to camera calibration, we transform a checkerboard point over a transformation chain containing the base-world pose, the tool pose, and the hand-eye pose before projecting it into the ICS. This allows optimizing for the hand-eye pose and base-world pose. We define the parameter vectors
+\begin{equation}
+    \begin{split}
+        \Vector{x} &= \left( \alpha_x, \beta_x, \gamma_x, t_{x,x}, t_{y,x}, t_{z,x} \right),\\
+        \Vector{y} &= \left( \alpha_y, \beta_y, \gamma_y, t_{x,y}, t_{y,y}, t_{z,y} \right),
+    \end{split}
+\end{equation}
+which represent a minimal parameterization of the hand-eye pose~$\Matrix{X}=\TMatrix{C}{T}{T}$ and the base-world pose~$\Matrix{Y}=\TMatrix{W}{T}{B}$, respectively. These are the parameters to be optimized. The nonlinear refinement is formulated as the minimization of the reprojection error function
+\begin{equation}
+    \begin{split}
+        \label{eq:hec_repr_error_ics}
+        d(\Vector{x}, \Vector{y})
+            &= \sum_{k=1}^{n_o} \sum_{j=1}^{n_m}
+                \left\|
+                    \Vector{m}_{j,k} -
+                    \boldsymbol{\pi}\!\left(
+                        \Vector{M}_{j,k}, \Vector{i}
+                    \right)
+                \right\|_2^2
+            \;\longrightarrow\; \min, \\
+        \Vector{M}_{j,k} &= \Matrix{T}(\Vector{x})\left(\TMatrix{T}{T}{B}\right)_k\Matrix{T}(\Vector{y})^{-1}
+                        \Vector{M}_j,
+    \end{split}
+\end{equation}
+where $\Vector{m}_{j,k}$ denotes the observed 2D image coordinate of the $j$-th calibration point in the $k$-th image. $\Vector{M}_j$ is the corresponding homogenous 3D WCS coordinate, which is transformed to the CCS of the $k$-th image through the transformation chain illustrated in Figure~\ref{fig:transformations}, yielding $\Vector{M}_{j,k}$. $\Vector{M}_{j,k}$ is then projected into the image via the projection function~$\boldsymbol{\pi}$ using the intrinsic camera parameters~\Vector{i}. The objective function~\eqref{eq:hec_repr_error_ics} is minimized using the Levenberg-Marquardt algorithm~\cite{marquardt_algorithm_1963}, yielding optimal estimates for both the hand-eye pose~\Matrix{X} and the base-world pose~\Matrix{Y}.
+
 \subsection{Online 3D Reconstruction}\label{ssec:methodology:online_3d_reconstruction}
+At this stage, the following quantities are available from the preceding synchronization and calibration procedure:
+\begin{enumerate}
+    \item the latency difference $\Delta t$,
+    \item the intrinsic parameter vector $\Vector{i}$,
+    \item the hand-eye pose $\TMatrix{C}{T}{T}$.
+\end{enumerate}
+With these quantities, we can now perform the 3DGS-based online 3D reconstruction. During the incremental reconstruction stage, $\Delta t$ enables us to continuously recieve temporally matched pairs of an image and its corresponding tool pose $\TMatrix{T}{T}{B}$. The obtained image is then, using the previously determined intrinsic parameter vector $\Vector{i}$, undistorted and shifted so that the principle point lies in the image center. In the same time, the tool pose $\TMatrix{T}{T}{B}$ can, togehter with the previously determined hand-eye pose $\TMatrix{C}{T}{T}$, be composed to recieve the desired pose of the BCS with respect to the CCS
+\begin{equation}
+    \label{eq:methodology:camera_pose_chain}
+    \TMatrix{C}{T}{B} = \TMatrix{C}{T}{T} \TMatrix{T}{T}{B}.
+\end{equation}
+The shifted and undistorted image can then, together with its pose $\TMatrix{C}{T}{B}$, be used as an incremental input to the 3DGS-based online 3D reconstruction to perform reconstruction directly in the BCS.
+
+As a baseline for our reconstruction algorithm, we use the method On-the-fly NVS~\cite{meuleman_--fly_2025}. This approach already handles incremental 3DGS, as well as initial camera pose and intrinsic parameter estimation and their refinement in the 3DGS optimization.
+
+Our goal therefore is to streamline this baseline approach by eliminating the initial camera pose and intrinsic parameter estimation and replacing those by our well-known intrinsic parameter vector $\Vector{i}$ and on-the-fly acquired camera pose $\TMatrix{C}{T}{B}$. This enables us to perform online, incremental 3D reconstruction using 3DGS, already in the metric BCS. 
+
+To investigate whether additional pose refinement is beneficial, we implement and evaluate three different variants. We refer to these methods as follows:
+
+\begin{enumerate}
+    \item \textbf{MocapGS-Fixed:} The initial camera poses obtained from the Mocap system are used directly and are not further refined.
+    \item \textbf{MocapGS-FullOpt:} The initial camera poses are refined jointly with the Gaussian parameters during the 3DGS optimization.
+    \item \textbf{MocapGS-RotOpt:} Only the rotational components of the initial camera poses are refined during 3DGS optimization, while the translational components are kept fixed in order to preserve the metric scale of the reconstruction.
+\end{enumerate}
+
 \subsection{3D Mesh Extraction}\label{ssec:methodology:mesh_extraction}
+After completing the online 3DGS-based 3D reconstruction, we perform an offline surface extraction step to recover the explicit geometry of the observed scene or object. For this purpose, we adopt the efficient mesh extraction pipeline proposed in SuGaR~\cite{guedon_sugar_2024}, which is straightforward to integrate with a previously trained Gaussian representation.
+
+SuGaR extracts surface points by identifying locations of equal density within the scene. Specifically, multiple depth maps are rendered from different viewpoints, and pixels are sampled from each depth map. For every corresponding camera ray, the method determines whether a point with a predefined density value exists along the ray and, if so, computes its 3D position. The collection of these points yields a sparse sampling of the underlying surface. Finally, Poisson surface reconstruction~\cite{kazhdan_poisson_2006} is applied to the extracted surface points to generate a triangular mesh.
 
 \section{Experiments}\label{sec:experiments}
+\subsection{Evaluation of the Calibration Accuracy}\label{sec:experiments:calibration}
+\paragraph{Camera Calibration.}
+\paragraph{Hand-Eye Calibration.}
+\subsection{Evaluation of the Reconstruction Quality}\label{sec:experiments:reconstruction}
+\paragraph{2D Evaluation.}
+\paragraph{3D Evaluation.}
 
 \section{Discussion}\label{sec:discussion}
 
