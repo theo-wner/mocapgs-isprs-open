@@ -20,6 +20,9 @@
 \documentclass[a4paper,fleqn]{cas-dc}
 
 \usepackage[numbers]{natbib}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{calc}
 
 %% --------------------------------
 %% | Own Commands                 |
@@ -207,11 +210,11 @@ Collecting all parameters, we define the vector
 which contains all unknowns to be optimized. The distortion parameters $K_1, K_2, P_1$, and $P_2$ are typically small, so we assume initial values of zero. We can now define the residual function
 \begin{equation}
     \label{eq:repr_error_ics}
-    d(\boldsymbol{\theta}) = \sum_{k=1}^{n_o} \sum_{j=1}^{n_m}
+    d_{\mathrm{CC}}(\boldsymbol{\theta}) = \sum_{k=1}^{n_o} \sum_{j=1}^{n_m}
         \left\| \Vector{m}_{j,k} - \boldsymbol{\pi}\!\left( \Vector{M}_j, \boldsymbol{\theta} \right) \right\|_2^2 
         \;\longrightarrow\; \mathrm{min},
 \end{equation}
-where $\Vector{m}_{j,k}$ denotes the observed 2D ICS coordinate of the $j$-th corner in the $k$-th image. $\Vector{M}_j$ denotes the corresponding 3D WCS coordinate, which is projected into the ICS with the projection $\boldsymbol{\pi}$. The function $d(\boldsymbol{\theta})$ is commonly referred to as the reprojection error, which we minimize using the Levenberg-Marquardt method~\cite{marquardt_algorithm_1963}.
+where $\Vector{m}_{j,k}$ denotes the observed 2D ICS coordinate of the $j$-th corner in the $k$-th image. $\Vector{M}_j$ denotes the corresponding 3D WCS coordinate, which is projected into the ICS with the projection $\boldsymbol{\pi}$. The function $d_{\mathrm{CC}}(\boldsymbol{\theta})$ is commonly referred to as the reprojection error, which we minimize using the Levenberg-Marquardt method~\cite{marquardt_algorithm_1963}. After optimization, the reprojection error~\eqref{eq:repr_error_ics} typically yields a residual value of $d_{\mathrm{CC}}\approx 0.5\,\mathrm{px}$ with our used setup.
 
 \subsection{Hand-eye Calibration}\label{ssec:methodology:hec}
 During the acquisition of the calibration dataset, we not only capture calibration images but also record the corresponding tool pose from the Mocap system for each image, synchronized via $\Delta t$. This allows us to perform a hand-eye calibration.
@@ -248,7 +251,7 @@ which represent a minimal parameterization of the hand-eye pose~$\Matrix{X}=\TMa
 \begin{equation}
     \begin{split}
         \label{eq:hec_repr_error_ics}
-        d(\Vector{x}, \Vector{y})
+        d_{\mathrm{HEC}}(\Vector{x}, \Vector{y})
             &= \sum_{k=1}^{n_o} \sum_{j=1}^{n_m}
                 \left\|
                     \Vector{m}_{j,k} -
@@ -261,7 +264,7 @@ which represent a minimal parameterization of the hand-eye pose~$\Matrix{X}=\TMa
                         \Vector{M}_j,
     \end{split}
 \end{equation}
-where $\Vector{m}_{j,k}$ denotes the observed 2D image coordinate of the $j$-th calibration point in the $k$-th image. $\Vector{M}_j$ is the corresponding homogenous 3D WCS coordinate, which is transformed to the CCS of the $k$-th image through the transformation chain illustrated in Figure~\ref{fig:transformations}, yielding $\Vector{M}_{j,k}$. $\Vector{M}_{j,k}$ is then projected into the image via the projection function~$\boldsymbol{\pi}$ using the intrinsic camera parameters~\Vector{i}. The objective function~\eqref{eq:hec_repr_error_ics} is minimized using the Levenberg-Marquardt algorithm~\cite{marquardt_algorithm_1963}, yielding optimal estimates for both the hand-eye pose~\Matrix{X} and the base-world pose~\Matrix{Y}.
+where $\Vector{m}_{j,k}$ denotes the observed 2D image coordinate of the $j$-th calibration point in the $k$-th image. $\Vector{M}_j$ is the corresponding homogenous 3D WCS coordinate, which is transformed to the CCS of the $k$-th image through the transformation chain illustrated in Figure~\ref{fig:transformations}, yielding $\Vector{M}_{j,k}$. $\Vector{M}_{j,k}$ is then projected into the image via the projection function~$\boldsymbol{\pi}$ using the intrinsic camera parameters~\Vector{i}. The reprojection error~\eqref{eq:hec_repr_error_ics} is minimized using the Levenberg-Marquardt algorithm~\cite{marquardt_algorithm_1963}, yielding optimal estimates for both the hand-eye pose~\Matrix{X} and the base-world pose~\Matrix{Y}. After optimization, the reprojection error~\eqref{eq:hec_repr_error_ics} typically yields a residual value of $d_{\mathrm{HEC}}\approx 1.5\,\mathrm{px}$ with our used setup.
 
 \subsection{Online 3D Reconstruction}\label{ssec:methodology:online_3d_reconstruction}
 At this stage, the following quantities are available from the preceding synchronization and calibration procedure:
@@ -294,17 +297,244 @@ After completing the online 3DGS-based 3D reconstruction, we perform an offline 
 
 SuGaR extracts surface points by identifying locations of equal density within the scene. Specifically, multiple depth maps are rendered from different viewpoints, and pixels are sampled from each depth map. For every corresponding camera ray, the method determines whether a point with a predefined density value exists along the ray and, if so, computes its 3D position. The collection of these points yields a sparse sampling of the underlying surface. Finally, Poisson surface reconstruction~\cite{kazhdan_poisson_2006} is applied to the extracted surface points to generate a triangular mesh.
 
-\section{Experiments}\label{sec:experiments}
-\subsection{Evaluation of the Calibration Accuracy}\label{sec:experiments:calibration}
-\paragraph{Camera Calibration.}
-\paragraph{Hand-Eye Calibration.}
-\subsection{Evaluation of the Reconstruction Quality}\label{sec:experiments:reconstruction}
-\paragraph{2D Evaluation.}
-\paragraph{3D Evaluation.}
+\section{Evaluation}\label{sec:experiments}
+This section presents a comprehensive evaluation of the proposed MocapGS method. We first describe the comparative setup and introduce the datasets employed in our experiments. Subsequently, we report both quantitative and qualitative results.
+
+\subsection{Comparative Setup}
+We compare our approach against 3DGS, as well as against On-the-fly NVS, which forms the basis of our system. The key difference between the methods lies in how camera poses and intrinsic parameters are obtained and optimized.
+
+3DGS estimates all camera poses and intrinsics in advance using COLMAP~\cite{schonberger_pixelwise_2016}. The comparison is therefore not completely fair, since it is not an online method and is significantly slower. Nevertheless, we include it as a baseline because it represents a strong, widely adopted offline approach.
+
+On-the-fly NVS is an online method and estimates intrinsics from a bundle adjustment of the first 8 frames. Initial camera poses for each subsequent frame are then also estimated using bundle adjustment and refined during the following scene optimization.
+
+MocapGS is also an online method and leverages externally provided and calibrated camera parameters. Camera intrinsics are assumed to be known and fixed, while camera poses are obtained from the Mocap system. To study the influence of pose optimization during training, we evaluate the three variants of our approach, MocapGS-Fixed, MocapGS-FullOpt, and MocapGS-RotOpt.
+
+\subsection{Datasets}
+We evaluate all methods on three reconstruction datasets we captured using our Mocap setup:
+\paragraph{Buddha.}
+This dataset consists of 411 RGB images capturing a Buddha statue from multiple concentric viewpoints, each with its corresponding Mocap pose. The object exhibits both coarse geometric structure and fine-grained surface details, making it well suited for quantitative 3D evaluation. A highly accurate 3D ground truth of the statue is available in the form of a dense mesh acquired using a structured-light scanning system, for details refer to \cite{petrovska_geometric_2023, petrovska_vision_2024}.
+
+\paragraph{Robot.} 
+This dataset consists of 409 RGB images, each with an associated Mocap pose. It captures a working table setup that includes a robot arm, controller, monitor, computers, and various cables. The scene is captured from multiple concentric viewpoints. This dataset poses a particularly challenging reconstruction scenario due to its complex and heterogeneous geometry, as well as the presence of thin structures and significant clutter. A 3D ground truth of the working table is available in the form of a dense point cloud acquired using a Zoller+Fröhlich Imager 5016 laser scanner.
+
+\paragraph{PhotoLab.} 
+This dataset consists of 176 RGB images capturing the room in which the Mocap system is installed. Each image is accompanied by its corresponding Mocap pose. Unlike the previous datasets, the scene is captured in an eccentric, inside-out manner: instead of observing a single object from the outside, the camera traverses the room along a looped trajectory, capturing the surrounding environment. This dataset is particularly challenging, especially for image-based pose estimation methods, as many visual features are only observed from a limited number of viewpoints. A 3D ground truth of the room is not available.
+
+\subsection{General Considerations}
+In contrast to COLMAP and On-the-fly NVS, MocapGS is not constrained to a minimum image overlap for pose estimation. Despite this advantage of MocapGS over COLMAP and On-the-fly NVS, all datasets provide sufficient image overlap, enabling COLMAP and On-the-fly NVS to estimate camera poses for each image.
+
+MocapGS uses the Mocap poses as input, while \\COLMAP+3DGS and On-the-fly NVS only use the captured images as input and infer the pose solely from image data. COLMAP+3DGS and On-the-fly NVS therefore operate with an unknown scale factor, while MocapGS is able to operate in metric units due to the calibrated Mocap system.
+
+\subsection{Metrics}
+\paragraph{2D Metrics.}
+For assessing the rendering quality of the output 3DGS representation, we report the Peak Signal-to-Noise Ratio
+(PSNR) and Structural Similarity Index Measure (SSIM). These metrics are computed using ground truth image-pose pairs, that have not been used for training. 
+
+For COLMAP+3DGS, we use the camera poses estimated from COLMAP as ground truth pose.
+
+On-the-fly NVS jointly optimizes camera poses and the scene representation. Consequently, a strict separation between scene representation and ground truth poses is less straightforward. In their evaluation protocol, the authors estimate the poses of test images during joint 3DGS optimization while keeping the scene representation fixed, resulting in no scene update for a given test image-pose pair.
+
+For MocapGS-Fixed, we use the camera poses acquired by the Mocap system as ground truth pose. MocapGS-FullOpt and MocapGS-RotOpt further refine the test poses similar to On-the-fly NVS.
+
+\paragraph{3D Metrics.}
+For the 3D evaluation, we convert the optimized 3DGS representation into an explicit triangle mesh following the procedure described in Section~\ref{ssec:methodology:mesh_extraction}. The reconstructed mesh is then compared to the ground truth 3D data, which consists of a triangle mesh for the Buddha dataset and a point cloud for the Robot dataset.
+
+Before comparison, we align the reconstructed mesh to the ground truth using a two-stage registration procedure: an initial coarse alignment based on manually selected point correspondences, followed by fine registration using the Iterative Closest Point (ICP) algorithm~\cite{besl_method_1992}. We then compute Cloud-to-Mesh (C2M) distances.
+
+For the Buddha dataset, C2M distances are measured from the reconstructed mesh vertices to the ground truth mesh. For the Robot dataset, due to the sparsity of the ground truth point cloud, distances are computed from the ground truth points to the reconstructed mesh.
+
+From all C2M distances, the mean $\mu_{\mathrm{3D}}$ and standard deviation $\sigma_{\mathrm{3D}}$ can be calculated. In principle, $\mu_{\mathrm{3D}}$ should be small if the reconstructed mesh is registered perfectly to the ground truth. $\mu_{\mathrm{3D}}$ therefore serves as a measure of the quality of the registration. The residual uncertainty and noise are characterized by the standard deviation $\sigma_{\mathrm{3D}}$, which therefore is the metric we report.
+
+\subsection{Quantitative Evaluation}
+\begin{table*}[t]
+\centering
+\caption{Quantitative results on the Buddha, Robot, and PhotoLab datasets.
+We report runtime (including pose estimation), PSNR, SSIM, and $\sigma_{\mathrm{3D}}$.
+The \colorbox{blue!50}{\strut best} and \colorbox{blue!20}{\strut second best} results are color-coded among the online methods (On-the-fly NVS and MocapGS variants).}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cccc|cccc|cccc}
+\toprule
+ & \multicolumn{4}{c|}{\textbf{Buddha}} 
+ & \multicolumn{4}{c|}{\textbf{Robot}} 
+ & \multicolumn{4}{c}{\textbf{PhotoLab}} \\
+\cmidrule(r){2-5} \cmidrule(r){6-9} \cmidrule(r){10-13}
+ & Time$\downarrow$ & PSNR$\uparrow$ & SSIM$\uparrow$ & $\sigma_{\mathrm{3D}}$ (mm)$\downarrow$
+ & Time$\downarrow$ & PSNR$\uparrow$ & SSIM$\uparrow$ & $\sigma_{\mathrm{3D}}$ (mm)$\downarrow$
+ & Time$\downarrow$ & PSNR$\uparrow$ & SSIM$\uparrow$ & $\sigma_{\mathrm{3D}}$ (mm)$\downarrow$ \\
+\midrule
+On-the-fly NVS
+& 02:00 & 29.10 & \cellcolor{blue!20}0.83 & 6.2
+& 01:58 & 26.17 & 0.82 & \cellcolor{blue!20}4.5
+& 00:45 & 25.89 & \cellcolor{blue!20}0.78 & -- \\
+
+MocapGS-Fixed
+& \cellcolor{blue!50}01:53 & 28.80 & 0.82 & \cellcolor{blue!20}5.4
+& \cellcolor{blue!50}01:52 & 26.82 & 0.83 & 4.7
+& \cellcolor{blue!50}00:42 & 31.52 & \cellcolor{blue!50}0.85 & -- \\
+
+MocapGS-FullOpt
+& \cellcolor{blue!20}01:55 & \cellcolor{blue!50}29.56 & \cellcolor{blue!50}0.84 & \cellcolor{blue!50}5.1
+& \cellcolor{blue!20}01:53 & \cellcolor{blue!50}28.05 & \cellcolor{blue!50}0.85 & \cellcolor{blue!50}4.2
+& \cellcolor{blue!20}00:43 & \cellcolor{blue!50}31.73 & \cellcolor{blue!50}0.85 & -- \\
+
+MocapGS-RotOpt
+& \cellcolor{blue!20}01:55 & \cellcolor{blue!20}29.47 & \cellcolor{blue!50}0.84 & \cellcolor{blue!50}5.1
+& 01:54 & \cellcolor{blue!20}27.61 & \cellcolor{blue!20}0.84 & 5.0
+& \cellcolor{blue!20}00:43 & \cellcolor{blue!20}31.68 & \cellcolor{blue!50}0.85 & -- \\
+\midrule
+COLMAP + 3DGS
+& 12:42 & 31.67 & 0.92 & 14.2
+& 12:06 & 31.53 & 0.93 & 7.0
+& 11:13 & 32.14 & 0.90 & -- \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:reconstruction_results}
+\end{table*}
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{figures/buddha_montage.png} \\
+    \vspace{0.1cm}
+    \includegraphics[width=\textwidth]{figures/robot_montage.png} \\
+    \vspace{0.1cm}
+    \includegraphics[width=\textwidth]{figures/photolab_montage.png}
+
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        Ground Truth
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        3DGS
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        On-the-fly NVS
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        MocapGS-Fixed
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        MocapGS-FullOpt
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        MocapGS-RotOpt
+    \end{minipage}
+    \caption{Test image that has not been used during training (left) and rendered scene for all corresponding methods. Buddha dataset on top, Robot dataset in the middle and PhotoLab dataset below.}
+	\label{fig:2d_results}
+\end{figure*}
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{figures/buddha_montage_3d.png} \\
+    \vspace{0.1cm}
+    \includegraphics[width=\textwidth]{figures/robot_montage_3d.png}
+
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        Ground Truth
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        3DGS
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        On-the-fly NVS
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        MocapGS-Fixed
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        MocapGS-FullOpt
+    \end{minipage}
+    \begin{minipage}[t]{0.16\linewidth}
+        \centering
+        MocapGS-RotOpt
+    \end{minipage}
+
+    \vspace{0.5cm}
+    
+    \begin{tikzpicture}
+        \node[anchor=south west, inner sep=0] (cbar) 
+            {\includegraphics[width=0.4\linewidth]{figures/cbar.png}};
+        \foreach \x in {-3,-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5} {
+            \pgfmathsetmacro{\pos}{(\x + 3)/4.5} 
+            \node[below] at ($(cbar.south west)!\pos!(cbar.south east)$) {\footnotesize \x};
+        }
+    \end{tikzpicture}
+    \caption{Extracted 3D geometry of the Buddha dataset (top) and the Robot dataset (bottom) colored according to the C2M distances to the ground truth representation. Color bar in cm.}
+	\label{fig:3d_results}
+\end{figure*}
+
+Table~\ref{tab:reconstruction_results} summarizes the numerical reconstruction results for all compared methods. We report all previously introduced evaluation metrics as well as the training duration for each approach. For 3DGS, the reported training duration corresponds to 30,000 optimization iterations. Since 3DGS is not incremental, we additionally account for the preprocessing time required for pose estimation using COLMAP.
+
+For On-the-fly NVS and our MocapGS variants, the training duration is measured as the cumulative runtime after performing 30 iterations per sequential input image. As all datasets are pre-captured and include recorded Mocap poses, these timings represent a best-case runtime scenario for the respective methods.
+
+Considering the 2D evaluation metrics PSNR and SSIM, 3DGS consistently achieves the highest scores across all datasets. This performance, however, comes at the cost of substantially longer training times due to the additional COLMAP overhead and the fixed number of optimization iterations. Among the four online methods, we observe that MocapGS-FullOpt and MocapGS-RotOpt consistently outperform On-the-fly NVS by a noticeable margin. This behaviour is especially distinctive on the PhotoLab dataset, which is particularily challenging for image-based pose estimation.
+
+Turning to the 3D evaluation metric $\sigma_{\mathrm{3D}}$ for the Buddha and Robot datasets, it becomes evident that 3DGS is not competitive with respect to extracted 3D geometry. This is likely due to a mismatch between the scene representation learned by 3DGS and our employed surface extraction strategy. Among the four online methods, the lowest $\sigma_{\mathrm{3D}}$ values, and thus the most accurate and stable 3D reconstructions, are consistently achieved by MocapGS variants, highlighting their advantage for high-quality 3D surface extraction.
+
+\subsection{Qualitative Evaluation}
+\begin{figure*}[]
+    \centering
+    \includegraphics[width=\linewidth]{figures/photolab_trajectories.png}
+
+    \begin{minipage}[t]{0.20\linewidth}
+        \centering
+        MocapGS-Fixed
+        \label{fig:experiments:photolab_part1}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.30\linewidth}
+        \centering
+        3DGS
+        \label{fig:experiments:photolab_part2}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        On-the-fly NVS
+        \label{fig:experiments:photolab_part3}
+    \end{minipage}
+
+    \caption{Top-view comparison of the camera poses in the PhotoLab scene. MocapGS-Fixed poses are obtained directly with the Mocap system, 3DGS poses are estimated with COLMAP, and On-the-fly NVS poses are estimated online.}
+    \label{fig:photolab_topview_comparison}
+\end{figure*}
+\begin{figure*}[]
+    \centering
+    \captionsetup[subfigure]{labelformat=empty}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/scene_mocapgs.png}
+        \caption{MocapGS-Fixed}
+    \end{subfigure}\hfill
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/scene_3dgs.png}
+        \caption{3DGS}
+    \end{subfigure}\hfill
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/scene_onthefly_nvs.png}
+        \caption{On-the-fly NVS}
+    \end{subfigure}
+
+    \caption{Overview of the Gaussian representation of the PhotoLab scene obtained by MocapGS-Fixed, 3DGS, and On-the-fly NVS.}
+    \label{fig:photolab_scene}
+\end{figure*}
 
 \section{Discussion}\label{sec:discussion}
 
 \section{Conclusion}\label{sec:conclusion}
+
+\newpage
 
 % The Appendices part is started with the command \appendix;
 % appendix sections are then done as normal sections
