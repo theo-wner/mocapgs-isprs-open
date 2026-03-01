@@ -325,27 +325,6 @@ In contrast to COLMAP and On-the-fly NVS, MocapGS is not constrained to a minimu
 
 MocapGS uses the Mocap poses as input, while \\COLMAP+3DGS and On-the-fly NVS only use the captured images as input and infer the pose solely from image data. COLMAP+3DGS and On-the-fly NVS therefore operate with an unknown scale factor, while MocapGS is able to operate in metric units due to the calibrated Mocap system.
 
-\subsection{Metrics}
-\paragraph{2D Metrics.}
-For assessing the rendering quality of the output 3DGS representation, we report the Peak Signal-to-Noise Ratio
-(PSNR) and Structural Similarity Index Measure (SSIM). These metrics are computed using ground truth image-pose pairs, that have not been used for training. 
-
-For COLMAP+3DGS, we use the camera poses estimated from COLMAP as ground truth pose.
-
-On-the-fly NVS jointly optimizes camera poses and the scene representation. Consequently, a strict separation between scene representation and ground truth poses is less straightforward. In their evaluation protocol, the authors estimate the poses of test images during joint 3DGS optimization while keeping the scene representation fixed, resulting in no scene update for a given test image-pose pair.
-
-For MocapGS-Fixed, we use the camera poses acquired by the Mocap system as ground truth pose. MocapGS-FullOpt and MocapGS-RotOpt further refine the test poses similar to On-the-fly NVS.
-
-\paragraph{3D Metrics.}
-For the 3D evaluation, we convert the optimized 3DGS representation into an explicit triangle mesh following the procedure described in Section~\ref{ssec:methodology:mesh_extraction}. The reconstructed mesh is then compared to the ground truth 3D data, which consists of a triangle mesh for the Buddha dataset and a point cloud for the Robot dataset.
-
-Before comparison, we align the reconstructed mesh to the ground truth using a two-stage registration procedure: an initial coarse alignment based on manually selected point correspondences, followed by fine registration using the Iterative Closest Point (ICP) algorithm~\cite{besl_method_1992}. We then compute Cloud-to-Mesh (C2M) distances.
-
-For the Buddha dataset, C2M distances are measured from the reconstructed mesh vertices to the ground truth mesh. For the Robot dataset, due to the sparsity of the ground truth point cloud, distances are computed from the ground truth points to the reconstructed mesh.
-
-From all C2M distances, the mean $\mu_{\mathrm{3D}}$ and standard deviation $\sigma_{\mathrm{3D}}$ can be calculated. In principle, $\mu_{\mathrm{3D}}$ should be small if the reconstructed mesh is registered perfectly to the ground truth. $\mu_{\mathrm{3D}}$ therefore serves as a measure of the quality of the registration. The residual uncertainty and noise are characterized by the standard deviation $\sigma_{\mathrm{3D}}$, which therefore is the metric we report.
-
-\subsection{Quantitative Evaluation}
 \begin{table*}[t]
 \centering
 \caption{Quantitative results on the Buddha, Robot, and PhotoLab datasets.
@@ -428,6 +407,36 @@ COLMAP + 3DGS
 	\label{fig:2d_results}
 \end{figure*}
 
+\subsection{Metrics}
+\paragraph{2D Metrics.}
+For assessing the rendering quality of the output 3DGS representation, we report the Peak Signal-to-Noise Ratio
+(PSNR) and Structural Similarity Index Measure (SSIM). These metrics are computed using ground truth image-pose pairs, that have not been used for training. 
+
+For COLMAP+3DGS, we use the camera poses estimated from COLMAP as ground truth pose.
+
+On-the-fly NVS jointly optimizes camera poses and the scene representation. Consequently, a strict separation between scene representation and ground truth poses is less straightforward. In their evaluation protocol, the authors estimate the poses of test images during joint 3DGS optimization while keeping the scene representation fixed, resulting in no scene update for a given test image-pose pair.
+
+For MocapGS-Fixed, we use the camera poses acquired by the Mocap system as ground truth pose. MocapGS-FullOpt and MocapGS-RotOpt further refine the test poses similar to On-the-fly NVS.
+
+\paragraph{3D Metrics.}
+For the 3D evaluation, we convert the optimized 3DGS representation into an explicit triangle mesh following the procedure described in Section~\ref{ssec:methodology:mesh_extraction}. The reconstructed mesh is then compared to the ground truth 3D data, which consists of a triangle mesh for the Buddha dataset and a point cloud for the Robot dataset.
+
+Before comparison, we align the reconstructed mesh to the ground truth using a two-stage registration procedure: an initial coarse alignment based on manually selected point correspondences, followed by fine registration using the Iterative Closest Point (ICP) algorithm~\cite{besl_method_1992}. We then compute Cloud-to-Mesh (C2M) distances.
+
+For the Buddha dataset, C2M distances are measured from the reconstructed mesh vertices to the ground truth mesh. For the Robot dataset, due to the sparsity of the ground truth point cloud, distances are computed from the ground truth points to the reconstructed mesh.
+
+From all C2M distances, the mean $\mu_{\mathrm{3D}}$ and standard deviation $\sigma_{\mathrm{3D}}$ can be calculated. In principle, $\mu_{\mathrm{3D}}$ should be small if the reconstructed mesh is registered perfectly to the ground truth. $\mu_{\mathrm{3D}}$ therefore serves as a measure of the quality of the registration. The residual uncertainty and noise are characterized by the standard deviation $\sigma_{\mathrm{3D}}$, which therefore is the metric we report.
+
+\subsection{Quantitative Evaluation}
+
+Table~\ref{tab:reconstruction_results} summarizes the numerical reconstruction results for all compared methods. We report all previously introduced evaluation metrics as well as the training duration for each approach. For 3DGS, the reported training duration corresponds to 30,000 optimization iterations. Since 3DGS is not incremental, we additionally account for the preprocessing time required for pose estimation using COLMAP.
+
+For On-the-fly NVS and our MocapGS variants, the training duration is measured as the cumulative runtime after performing 30 iterations per sequential input image. As all datasets are pre-captured and include recorded Mocap poses, these timings represent a best-case runtime scenario for the respective methods.
+
+Considering the 2D evaluation metrics PSNR and SSIM, 3DGS consistently achieves the highest scores across all datasets. This performance, however, comes at the cost of substantially longer training times due to the additional COLMAP overhead and the fixed number of optimization iterations. Among the four online methods, we observe that MocapGS-FullOpt and MocapGS-RotOpt consistently outperform On-the-fly NVS by a noticeable margin. This behaviour is especially distinctive on the PhotoLab dataset, which is particularily challenging for image-based pose estimation.
+
+Turning to the 3D evaluation metric $\sigma_{\mathrm{3D}}$ for the Buddha and Robot datasets, it becomes evident that 3DGS is not competitive with respect to extracted 3D geometry. This is likely due to a mismatch between the scene representation learned by 3DGS and our employed surface extraction strategy. Among the four online methods, the lowest $\sigma_{\mathrm{3D}}$ values, and thus the most accurate and stable 3D reconstructions, are consistently achieved by MocapGS variants, highlighting their advantage for high-quality 3D surface extraction.
+
 \begin{figure*}
 	\centering
 	\includegraphics[width=\textwidth]{figures/buddha_montage_3d.png} \\
@@ -473,15 +482,15 @@ COLMAP + 3DGS
 	\label{fig:3d_results}
 \end{figure*}
 
-Table~\ref{tab:reconstruction_results} summarizes the numerical reconstruction results for all compared methods. We report all previously introduced evaluation metrics as well as the training duration for each approach. For 3DGS, the reported training duration corresponds to 30,000 optimization iterations. Since 3DGS is not incremental, we additionally account for the preprocessing time required for pose estimation using COLMAP.
-
-For On-the-fly NVS and our MocapGS variants, the training duration is measured as the cumulative runtime after performing 30 iterations per sequential input image. As all datasets are pre-captured and include recorded Mocap poses, these timings represent a best-case runtime scenario for the respective methods.
-
-Considering the 2D evaluation metrics PSNR and SSIM, 3DGS consistently achieves the highest scores across all datasets. This performance, however, comes at the cost of substantially longer training times due to the additional COLMAP overhead and the fixed number of optimization iterations. Among the four online methods, we observe that MocapGS-FullOpt and MocapGS-RotOpt consistently outperform On-the-fly NVS by a noticeable margin. This behaviour is especially distinctive on the PhotoLab dataset, which is particularily challenging for image-based pose estimation.
-
-Turning to the 3D evaluation metric $\sigma_{\mathrm{3D}}$ for the Buddha and Robot datasets, it becomes evident that 3DGS is not competitive with respect to extracted 3D geometry. This is likely due to a mismatch between the scene representation learned by 3DGS and our employed surface extraction strategy. Among the four online methods, the lowest $\sigma_{\mathrm{3D}}$ values, and thus the most accurate and stable 3D reconstructions, are consistently achieved by MocapGS variants, highlighting their advantage for high-quality 3D surface extraction.
-
 \subsection{Qualitative Evaluation}
+Figure~\ref{fig:2d_results} shows one test view for each dataset. The ground truth image is depicted along with the rendered views generated from all compared methods from the repsective ground truth pose of the image. Overall, all methods produce visually compelling novel views, which is also reflected in reasonably high PSNR and SSIM values in Table~\ref{tab:reconstruction_results}. Noticable blur can only be observed on the PhotoLab dataset reconstructed by On-the-fly NVS. 
+
+Figure~\ref{fig:3d_results} shows the generated 3D geometry for the Buddha and the Robot dataset. The 3D representations are colored according to their C2M distances to the ground truth. It becomes evident that 3DGS in combined with our employed mesh extraction strategy does not produce a compelling 3D mesh. All other methods procuce visually compelling meshes with an accuracy in the range of few millimeters.
+
+Figure~\ref{fig:photolab_topview_comparison} presents a top-view comparison of the estimated camera poses for the PhotoLab scene. The MocapGS poses are directly provided by the Mocap system, the 3DGS poses are obtained via COLMAP, and the On-the-fly NVS poses are estimated online. MocapGS and 3DGS show close overall agreement, although 3DGS exhibits several outliers. In contrast, the On-the-fly NVS approach suffers from significant pose drift, resulting in a noticeable loop-closure error.
+
+Figure~\ref{fig:photolab_scene} illustrates the impact of this drift on the reconstructed scene. The figure provides an external view of the 3DGS-based representation of the PhotoLab scene. MocapGS produces a geometrically consistent and coherent reconstruction. While 3DGS encounters difficulties at loop closure, leading to local inconsistencies, the On-the-fly NVS reconstruction is globally distorted due to accumulated pose errors.
+
 \begin{figure*}[]
     \centering
     \includegraphics[width=\linewidth]{figures/photolab_trajectories.png}
@@ -489,24 +498,22 @@ Turning to the 3D evaluation metric $\sigma_{\mathrm{3D}}$ for the Buddha and Ro
     \begin{minipage}[t]{0.20\linewidth}
         \centering
         MocapGS-Fixed
-        \label{fig:experiments:photolab_part1}
     \end{minipage}%
     \hfill
     \begin{minipage}[t]{0.30\linewidth}
         \centering
         3DGS
-        \label{fig:experiments:photolab_part2}
     \end{minipage}%
     \hfill
     \begin{minipage}[t]{0.5\linewidth}
         \centering
         On-the-fly NVS
-        \label{fig:experiments:photolab_part3}
     \end{minipage}
 
     \caption{Top-view comparison of the camera poses in the PhotoLab scene. MocapGS-Fixed poses are obtained directly with the Mocap system, 3DGS poses are estimated with COLMAP, and On-the-fly NVS poses are estimated online.}
     \label{fig:photolab_topview_comparison}
 \end{figure*}
+
 \begin{figure*}[]
     \centering
     \captionsetup[subfigure]{labelformat=empty}
@@ -531,10 +538,25 @@ Turning to the 3D evaluation metric $\sigma_{\mathrm{3D}}$ for the Buddha and Ro
 \end{figure*}
 
 \section{Discussion}\label{sec:discussion}
+\paragraph{MocapGS Variant Selection.}
+Among the MocapGS variants, pose optimization clearly improves performance. Both MocapGS-FullOpt and MocapGS-RotOpt outperform \\ MocapGS-Fixed in 2D and 3D metrics, while FullOpt and RotOpt show negligible differences in 2D and 3D metrics. We prefer RotOpt because it optimizes only the rotation while keeping translations fixed, preserving metric scale.
+
+\paragraph{Capture Style.}
+On-the-fly NVS, as an example of purely image-based methods, requires an initial pose estimation via bundle adjustment. This restricts newly captured images to small displacements relative to the previous frame. If the user loses track of initial poses, they must reorient the camera toward previously observed regions to re-establish sufficient feature correspondences. This process leads to frequent interruptions during data acquisition. MocapGS addresses this limitation by eliminating the need for initial pose estimation. Initial poses are directly provided by the Mocap system. This enables fully unconstrained camera motion, allowing the user to focus on one part of the scene in one frame and a completely different region in the next without interruption. As a result, our approach enables a seamless, intuitive, and user-friendly data acquisition process.
+
+\paragraph{Robustness.}
+Even when disregarding the facilitated capture setup of MocapGS, which allows for sudden and rapid camera movements, and restricting the comparison to datasets with sufficient overlap for On-the-fly NVS to operate, MocapGS proves to be substantially more robust. As shown in Figures~\ref{fig:photolab_topview_comparison} and~\ref{fig:photolab_scene}, the camera poses estimated by On-the-fly NVS often exhibit significant drift or are entirely incorrect, particularly for challenging trajectories such as those in the PhotoLab dataset. This behavior can be attributed to the absence of loop closure in On-the-fly NVS. In contrast, MocapGS effectively exhibits no drift, as its pose estimates do not depend on previous observations but are instead provided continuously with high accuracy by the Mocap system. This design enables robust and stable scene reconstruction even under challenging and complex camera trajectories.
+
+\paragraph{Limitations.}
+MocapGS introduces additional overhead compared to the baseline on-the-fly NVS approach. The required synchronization and calibration procedures take approximately five minutes, representing only a modest time investment. However, the financial cost of the motion capture system is significant in comparison to the baseline setup, which requires only a standard camera.
+
+Also, a limitation of the presented approach lies in the separation between reconstruction and surface extraction. While high-quality meshes can be obtained in a post-processing step, the 3DGS representation itself is not explicitly optimized for surface consistency.
+
+\paragraph{Future Work.}
+A promising direction for future work is to incorporate surface-aware constraints or loss terms directly into the MocapGS training process, encouraging Gaussians to align with surface structures during reconstruction. Such constraints could improve the quality of the extracted geometry and reduce the reliance on offline surface extraction.
 
 \section{Conclusion}\label{sec:conclusion}
-
-\newpage
+In this paper, we presented MocapGS, a method for online 3D reconstruction that directly integrates accurate camera poses from a Mocap system into a 3DGS-based pipeline. By leveraging globally consistent and metrically accurate Mocap poses, our approach eliminates the need for image-based pose estimation and avoids the requirement for strong image overlap during capture. In comparison to methods that estimate poses solely from visual data, MocapGS achieves a more globally consistent and robust scene reconstruction, avoiding drift and loop-closure issues. Furthermore, the use of metric Mocap poses enables reconstruction in a fully metric scale without additional alignment steps. We hope that this work demonstrates the potential of Mocap systems not only as validation tools, but as primary pose providers for reliable and efficient 3D reconstruction.
 
 % The Appendices part is started with the command \appendix;
 % appendix sections are then done as normal sections

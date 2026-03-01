@@ -1,0 +1,147 @@
+\begin{thebibliography}{24}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Inproceedings
+\bibitem[{Behley and Stachniss(2018)}]{behley_efficient_2018}
+\bibinfo{author}{Behley, J.}, \bibinfo{author}{Stachniss, C.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Efficient {Surfel}-{Based} {SLAM} using {3D} {Laser} {Range} {Data} in {Urban} {Environments}}, in: \bibinfo{booktitle}{Robotics: {Science} and {Systems} {XIV}}, \bibinfo{publisher}{Robotics: Science and Systems Foundation}.
+\newblock \URLprefix \url{http://www.roboticsproceedings.org/rss14/p16.pdf}, \DOIprefix\doi{10.15607/RSS.2018.XIV.016}.
+%Type = Article
+\bibitem[{Besl and McKay(1992)}]{besl_method_1992}
+\bibinfo{author}{Besl, P.}, \bibinfo{author}{McKay, N.D.}, \bibinfo{year}{1992}.
+\newblock \bibinfo{title}{A method for registration of 3-{D} shapes}.
+\newblock \bibinfo{journal}{IEEE Transactions on Pattern Analysis and Machine Intelligence} \bibinfo{volume}{14}, \bibinfo{pages}{239--256}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/document/121791}, \DOIprefix\doi{10.1109/34.121791}.
+%Type = Article
+\bibitem[{Bradski(2000)}]{bradski_g_opencv_2000}
+\bibinfo{author}{Bradski, G.}, \bibinfo{year}{2000}.
+\newblock \bibinfo{title}{The {OpenCV} {Library}}.
+\newblock \bibinfo{journal}{Dr. Dobb's Journal of Software Tools} .
+%Type = Article
+\bibitem[{Cadena et~al.(2016)Cadena, Carlone, Carrillo, Latif, Scaramuzza, Neira, Reid and Leonard}]{cadena_past_2016}
+\bibinfo{author}{Cadena, C.}, \bibinfo{author}{Carlone, L.}, \bibinfo{author}{Carrillo, H.}, \bibinfo{author}{Latif, Y.}, \bibinfo{author}{Scaramuzza, D.}, \bibinfo{author}{Neira, J.}, \bibinfo{author}{Reid, I.}, \bibinfo{author}{Leonard, J.J.}, \bibinfo{year}{2016}.
+\newblock \bibinfo{title}{Past, {Present}, and {Future} of {Simultaneous} {Localization} and {Mapping}: {Toward} the {Robust}-{Perception} {Age}}.
+\newblock \bibinfo{journal}{IEEE Transactions on Robotics} \bibinfo{volume}{32}, \bibinfo{pages}{1309--1332}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/abstract/document/7747236}, \DOIprefix\doi{10.1109/TRO.2016.2624754}.
+%Type = Article
+\bibitem[{Daniilidis(1999)}]{daniilidis_hand-eye_1999}
+\bibinfo{author}{Daniilidis, K.}, \bibinfo{year}{1999}.
+\newblock \bibinfo{title}{Hand-{Eye} {Calibration} {Using} {Dual} {Quaternions}}.
+\newblock \bibinfo{journal}{The International Journal of Robotics Research} \bibinfo{volume}{18}, \bibinfo{pages}{286--298}.
+\newblock \URLprefix \url{https://doi.org/10.1177/02783649922066213}, \DOIprefix\doi{10.1177/02783649922066213}.
+%Type = Inproceedings
+\bibitem[{Endres et~al.(2012)Endres, Hess, Engelhard, Sturm, Cremers and Burgard}]{endres_evaluation_2012}
+\bibinfo{author}{Endres, F.}, \bibinfo{author}{Hess, J.}, \bibinfo{author}{Engelhard, N.}, \bibinfo{author}{Sturm, J.}, \bibinfo{author}{Cremers, D.}, \bibinfo{author}{Burgard, W.}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{An evaluation of the {RGB}-{D} {SLAM} system}, in: \bibinfo{booktitle}{2012 {IEEE} {International} {Conference} on {Robotics} and {Automation}}, \bibinfo{publisher}{IEEE}, \bibinfo{address}{St Paul, MN, USA}. pp. \bibinfo{pages}{1691--1696}.
+\newblock \URLprefix \url{http://ieeexplore.ieee.org/document/6225199/}, \DOIprefix\doi{10.1109/ICRA.2012.6225199}.
+%Type = Article
+\bibitem[{Gomes et~al.(2014)Gomes, Regina Pereira~Bellon and Silva}]{gomes_3d_2014}
+\bibinfo{author}{Gomes, L.}, \bibinfo{author}{Regina Pereira~Bellon, O.}, \bibinfo{author}{Silva, L.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{{3D} reconstruction methods for digital preservation of cultural heritage: {A} survey}.
+\newblock \bibinfo{journal}{Pattern Recognition Letters} \bibinfo{volume}{50}, \bibinfo{pages}{3--14}.
+\newblock \URLprefix \url{https://www.sciencedirect.com/science/article/pii/S0167865514001032}, \DOIprefix\doi{10.1016/j.patrec.2014.03.023}.
+%Type = Inproceedings
+\bibitem[{Guédon and Lepetit(2024)}]{guedon_sugar_2024}
+\bibinfo{author}{Guédon, A.}, \bibinfo{author}{Lepetit, V.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{{SuGaR}: {Surface}-{Aligned} {Gaussian} {Splatting} for {Efficient} {3D} {Mesh} {Reconstruction} and {High}-{Quality} {Mesh} {Rendering}}, in: \bibinfo{booktitle}{2024 {IEEE}/{CVF} {Conference} on {Computer} {Vision} and {Pattern} {Recognition} ({CVPR})}, pp. \bibinfo{pages}{5354--5363}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/document/10655755}, \DOIprefix\doi{10.1109/CVPR52733.2024.00512}.
+%Type = Book
+\bibitem[{Hartley and Zisserman(2004)}]{hartley_multiple_2004}
+\bibinfo{author}{Hartley, R.}, \bibinfo{author}{Zisserman, A.}, \bibinfo{year}{2004}.
+\newblock \bibinfo{title}{Multiple {View} {Geometry} in {Computer} {Vision}}.
+\newblock \bibinfo{edition}{2} ed., \bibinfo{publisher}{Cambridge University Press}, \bibinfo{address}{Cambridge}.
+\newblock \URLprefix \url{https://www.cambridge.org/core/books/multiple-view-geometry-in-computer-vision/0B6F289C78B2B23F596CAA76D3D43F7A}, \DOIprefix\doi{10.1017/CBO9780511811685}.
+%Type = Inproceedings
+\bibitem[{Kazhdan et~al.(2006)Kazhdan, Bolitho and Hoppe}]{kazhdan_poisson_2006}
+\bibinfo{author}{Kazhdan, M.}, \bibinfo{author}{Bolitho, M.}, \bibinfo{author}{Hoppe, H.}, \bibinfo{year}{2006}.
+\newblock \bibinfo{title}{Poisson surface reconstruction}, in: \bibinfo{booktitle}{Proceedings of the fourth {Eurographics} symposium on {Geometry} processing}, \bibinfo{publisher}{Eurographics Association}, \bibinfo{address}{Goslar, DEU}. pp. \bibinfo{pages}{61--70}.
+\newblock \DOIprefix\doi{10.5555/1281957.1281965}.
+%Type = Article
+\bibitem[{Kerbl et~al.(2023)Kerbl, Kopanas, Leimkuehler and Drettakis}]{kerbl_3d_2023}
+\bibinfo{author}{Kerbl, B.}, \bibinfo{author}{Kopanas, G.}, \bibinfo{author}{Leimkuehler, T.}, \bibinfo{author}{Drettakis, G.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{{3D} {Gaussian} {Splatting} for {Real}-{Time} {Radiance} {Field} {Rendering}}.
+\newblock \bibinfo{journal}{ACM Transactions on Graphics} \bibinfo{volume}{42}, \bibinfo{pages}{1--14}.
+\newblock \URLprefix \url{https://dl.acm.org/doi/10.1145/3592433}, \DOIprefix\doi{10.1145/3592433}.
+%Type = Article
+\bibitem[{Marquardt(1963)}]{marquardt_algorithm_1963}
+\bibinfo{author}{Marquardt, D.W.}, \bibinfo{year}{1963}.
+\newblock \bibinfo{title}{An {Algorithm} for {Least}-{Squares} {Estimation} of {Nonlinear} {Parameters}}.
+\newblock \bibinfo{journal}{Journal of the Society for Industrial and Applied Mathematics} \bibinfo{volume}{11}, \bibinfo{pages}{431--441}.
+\newblock \URLprefix \url{https://www.jstor.org/stable/2098941}.
+%Type = Inproceedings
+\bibitem[{Matsuki et~al.(2024)Matsuki, Murai, Kelly and Davison}]{matsuki_gaussian_2024}
+\bibinfo{author}{Matsuki, H.}, \bibinfo{author}{Murai, R.}, \bibinfo{author}{Kelly, P.H.J.}, \bibinfo{author}{Davison, A.J.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Gaussian {Splatting} {SLAM}}, in: \bibinfo{booktitle}{2024 {IEEE}/{CVF} {Conference} on {Computer} {Vision} and {Pattern} {Recognition} ({CVPR})}, \bibinfo{publisher}{IEEE}, \bibinfo{address}{Seattle, WA, USA}. pp. \bibinfo{pages}{18039--18048}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/document/10657715/}, \DOIprefix\doi{10.1109/CVPR52733.2024.01708}.
+%Type = Article
+\bibitem[{Meuleman et~al.(2025)Meuleman, Shah, Lanvin, Kerbl and Drettakis}]{meuleman_--fly_2025}
+\bibinfo{author}{Meuleman, A.}, \bibinfo{author}{Shah, I.}, \bibinfo{author}{Lanvin, A.}, \bibinfo{author}{Kerbl, B.}, \bibinfo{author}{Drettakis, G.}, \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{On-the-fly {Reconstruction} for {Large}-{Scale} {Novel} {View} {Synthesis} from {Unposed} {Images}}.
+\newblock \bibinfo{journal}{ACM Transactions on Graphics} \bibinfo{volume}{44}, \bibinfo{pages}{1--14}.
+\newblock \URLprefix \url{https://dl.acm.org/doi/10.1145/3730913}, \DOIprefix\doi{10.1145/3730913}.
+%Type = Article
+\bibitem[{Mildenhall et~al.(2021)Mildenhall, Srinivasan, Tancik, Barron, Ramamoorthi and Ng}]{mildenhall_nerf_2021}
+\bibinfo{author}{Mildenhall, B.}, \bibinfo{author}{Srinivasan, P.P.}, \bibinfo{author}{Tancik, M.}, \bibinfo{author}{Barron, J.T.}, \bibinfo{author}{Ramamoorthi, R.}, \bibinfo{author}{Ng, R.}, \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{{NeRF}: representing scenes as neural radiance fields for view synthesis}.
+\newblock \bibinfo{journal}{Commun. ACM} \bibinfo{volume}{65}, \bibinfo{pages}{99--106}.
+\newblock \URLprefix \url{https://dl.acm.org/doi/10.1145/3503250}, \DOIprefix\doi{10.1145/3503250}.
+%Type = Article
+\bibitem[{Petrovska and Jutzi(2024)}]{petrovska_vision_2024}
+\bibinfo{author}{Petrovska, I.}, \bibinfo{author}{Jutzi, B.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Vision through {Obstacles}—{3D} {Geometric} {Reconstruction} and {Evaluation} of {Neural} {Radiance} {Fields} ({NeRFs})}.
+\newblock \bibinfo{journal}{Remote Sensing} \bibinfo{volume}{16}, \bibinfo{pages}{1188}.
+\newblock \URLprefix \url{https://www.mdpi.com/2072-4292/16/7/1188}, \DOIprefix\doi{10.3390/rs16071188}.
+%Type = Article
+\bibitem[{Petrovska et~al.(2023)Petrovska, Jäger, Haitz and Jutzi}]{petrovska_geometric_2023}
+\bibinfo{author}{Petrovska, I.}, \bibinfo{author}{Jäger, M.}, \bibinfo{author}{Haitz, D.}, \bibinfo{author}{Jutzi, B.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Geometric {Accuracy} {Analysis} between {Neural} {Radiance} {Fields} ({NeRFs}) and {Terrestrial} {Laser} {Scanning} ({TLS})}.
+\newblock \bibinfo{journal}{The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences} \bibinfo{volume}{XLVIII-1-W3-2023}, \bibinfo{pages}{153--159}.
+\newblock \URLprefix \url{https://isprs-archives.copernicus.org/articles/XLVIII-1-W3-2023/153/2023/}, \DOIprefix\doi{10.5194/isprs-archives-XLVIII-1-W3-2023-153-2023}. \bibinfo{note}{conference Name: 2nd GEOBENCH Workshop on Evaluation and BENCHmarking of Sensors, Systems and GEOspatial Data in Photogrammetry and Remote Sensing - 23–24 October 2023, Krakow, Poland}.
+%Type = Inproceedings
+\bibitem[{Schönberger and Frahm(2016)}]{schonberger_structure--motion_2016}
+\bibinfo{author}{Schönberger, J.L.}, \bibinfo{author}{Frahm, J.M.}, \bibinfo{year}{2016}.
+\newblock \bibinfo{title}{Structure-from-{Motion} {Revisited}}, in: \bibinfo{booktitle}{2016 {IEEE} {Conference} on {Computer} {Vision} and {Pattern} {Recognition} ({CVPR})}, pp. \bibinfo{pages}{4104--4113}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/document/7780814}, \DOIprefix\doi{10.1109/CVPR.2016.445}.
+%Type = Inproceedings
+\bibitem[{Schönberger et~al.(2016)Schönberger, Zheng, Frahm and Pollefeys}]{schonberger_pixelwise_2016}
+\bibinfo{author}{Schönberger, J.L.}, \bibinfo{author}{Zheng, E.}, \bibinfo{author}{Frahm, J.M.}, \bibinfo{author}{Pollefeys, M.}, \bibinfo{year}{2016}.
+\newblock \bibinfo{title}{Pixelwise {View} {Selection} for {Unstructured} {Multi}-{View} {Stereo}}, in: \bibinfo{editor}{Leibe, B.}, \bibinfo{editor}{Matas, J.}, \bibinfo{editor}{Sebe, N.}, \bibinfo{editor}{Welling, M.} (Eds.), \bibinfo{booktitle}{Computer {Vision} – {ECCV} 2016}, \bibinfo{publisher}{Springer International Publishing}, \bibinfo{address}{Cham}. pp. \bibinfo{pages}{501--518}.
+\newblock \DOIprefix\doi{10.1007/978-3-319-46487-9_31}.
+%Type = Article
+\bibitem[{Shu et~al.(2026)Shu, Bei, Dai, Li, Chen and Wang}]{shu_mocap2gt_2026}
+\bibinfo{author}{Shu, Z.}, \bibinfo{author}{Bei, S.}, \bibinfo{author}{Dai, J.}, \bibinfo{author}{Li, L.}, \bibinfo{author}{Chen, Z.}, \bibinfo{author}{Wang, J.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{{MoCap2GT}: {A} {High}-{Precision} {Ground} {Truth} {Estimator} for {SLAM} {Benchmarking} {Based} on {Motion} {Capture} and {IMU} {Fusion}}.
+\newblock \bibinfo{journal}{IEEE Robotics and Automation Letters} \bibinfo{volume}{11}, \bibinfo{pages}{1538--1545}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/document/11297812}, \DOIprefix\doi{10.1109/LRA.2025.3643287}.
+%Type = Book
+\bibitem[{Steger et~al.(2018)Steger, Ulrich and Wiedemann}]{steger_machine_2018}
+\bibinfo{editor}{Steger, C.}, \bibinfo{editor}{Ulrich, M.}, \bibinfo{editor}{Wiedemann, C.} (Eds.), \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Machine vision algorithms and applications}.
+\newblock \bibinfo{edition}{2nd, completely revised and enlarged edition} ed., \bibinfo{publisher}{Wiley-VCH}, \bibinfo{address}{Weinheim}.
+%Type = Inproceedings
+\bibitem[{Sturm et~al.(2012)Sturm, Engelhard, Endres, Burgard and Cremers}]{sturm_benchmark_2012}
+\bibinfo{author}{Sturm, J.}, \bibinfo{author}{Engelhard, N.}, \bibinfo{author}{Endres, F.}, \bibinfo{author}{Burgard, W.}, \bibinfo{author}{Cremers, D.}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{A benchmark for the evaluation of {RGB}-{D} {SLAM} systems}, in: \bibinfo{booktitle}{2012 {IEEE}/{RSJ} {International} {Conference} on {Intelligent} {Robots} and {Systems}}, \bibinfo{publisher}{IEEE}, \bibinfo{address}{Vilamoura-Algarve, Portugal}. pp. \bibinfo{pages}{573--580}.
+\newblock \URLprefix \url{http://ieeexplore.ieee.org/document/6385773/}, \DOIprefix\doi{10.1109/IROS.2012.6385773}.
+%Type = Article
+\bibitem[{Zhang(2000)}]{zhang_flexible_2000}
+\bibinfo{author}{Zhang, Z.}, \bibinfo{year}{2000}.
+\newblock \bibinfo{title}{A flexible new technique for camera calibration}.
+\newblock \bibinfo{journal}{IEEE Transactions on Pattern Analysis and Machine Intelligence} \bibinfo{volume}{22}, \bibinfo{pages}{1330--1334}.
+\newblock \URLprefix \url{https://ieeexplore.ieee.org/document/888718}, \DOIprefix\doi{10.1109/34.888718}.
+%Type = Inproceedings
+\bibitem[{Zheng et~al.(2025)Zheng, Zhu, Bieri, Pollefeys, Peng and Armeni}]{zheng_wildgs-slam_2025}
+\bibinfo{author}{Zheng, J.}, \bibinfo{author}{Zhu, Z.}, \bibinfo{author}{Bieri, V.}, \bibinfo{author}{Pollefeys, M.}, \bibinfo{author}{Peng, S.}, \bibinfo{author}{Armeni, I.}, \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{{WildGS}-{SLAM}: {Monocular} {Gaussian} {Splatting} {SLAM} in {Dynamic} {Environments}}, in: \bibinfo{booktitle}{Proceedings of the {IEEE}/{CVF} {Conference} on {Computer} {Vision} and {Pattern} {Recognition}}, pp. \bibinfo{pages}{11461--11471}.
+
+\end{thebibliography}

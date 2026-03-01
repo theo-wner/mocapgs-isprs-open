@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: mocapgs.aux
+The style file: cas-model2-names.bst
+Database file #1: references.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--empty pages in behley_efficient_2018
+You've used 24 entries,
+            2990 wiz_defined-function locations,
+            931 strings with 13378 characters,
+and the built_in function-call counts, 18929 in all, are:
+= -- 1575
+> -- 726
+< -- 18
++ -- 289
+- -- 253
+* -- 2144
+:= -- 2651
+add.period$ -- 84
+call.type$ -- 24
+change.case$ -- 208
+chr.to.int$ -- 24
+cite$ -- 25
+duplicate$ -- 1359
+empty$ -- 1328
+format.name$ -- 330
+if$ -- 3647
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 264
+newline$ -- 147
+num.names$ -- 99
+pop$ -- 408
+preamble$ -- 1
+purify$ -- 179
+quote$ -- 0
+skip$ -- 465
+stack$ -- 0
+substring$ -- 857
+swap$ -- 1077
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 210
+warning$ -- 1
+while$ -- 120
+width$ -- 0
+write$ -- 406
+(There was 1 warning)
