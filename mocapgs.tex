@@ -19,6 +19,7 @@
 
 \documentclass[a4paper,fleqn]{cas-dc}
 
+% Packages
 \usepackage[numbers]{natbib}
 \usepackage{subcaption}
 \usepackage{tikz}
@@ -428,7 +429,6 @@ For the Buddha dataset, C2M distances are measured from the reconstructed mesh v
 From all C2M distances, the mean $\mu_{\mathrm{3D}}$ and standard deviation $\sigma_{\mathrm{3D}}$ can be calculated. In principle, $\mu_{\mathrm{3D}}$ should be small if the reconstructed mesh is registered perfectly to the ground truth. $\mu_{\mathrm{3D}}$ therefore serves as a measure of the quality of the registration. The residual uncertainty and noise are characterized by the standard deviation $\sigma_{\mathrm{3D}}$, which therefore is the metric we report.
 
 \subsection{Quantitative Evaluation}
-
 Table~\ref{tab:reconstruction_results} summarizes the numerical reconstruction results for all compared methods. We report all previously introduced evaluation metrics as well as the training duration for each approach. For 3DGS, the reported training duration corresponds to 30,000 optimization iterations. Since 3DGS is not incremental, we additionally account for the preprocessing time required for pose estimation using COLMAP.
 
 For On-the-fly NVS and our MocapGS variants, the training duration is measured as the cumulative runtime after performing 30 iterations per sequential input image. As all datasets are pre-captured and include recorded Mocap poses, these timings represent a best-case runtime scenario for the respective methods.
@@ -495,17 +495,17 @@ Figure~\ref{fig:photolab_scene} illustrates the impact of this drift on the reco
     \centering
     \includegraphics[width=\linewidth]{figures/photolab_trajectories.png}
 
-    \begin{minipage}[t]{0.20\linewidth}
+    \begin{minipage}[t]{0.15\linewidth}
         \centering
         MocapGS-Fixed
     \end{minipage}%
     \hfill
-    \begin{minipage}[t]{0.30\linewidth}
+    \begin{minipage}[t]{0.55\linewidth}
         \centering
         3DGS
     \end{minipage}%
     \hfill
-    \begin{minipage}[t]{0.5\linewidth}
+    \begin{minipage}[t]{0.30\linewidth}
         \centering
         On-the-fly NVS
     \end{minipage}
@@ -514,22 +514,26 @@ Figure~\ref{fig:photolab_scene} illustrates the impact of this drift on the reco
     \label{fig:photolab_topview_comparison}
 \end{figure*}
 
-\begin{figure*}[]
+\begin{figure*}[t]
+    \captionsetup[subfigure]{
+        labelformat=empty,
+        font={sf,small} % use small if your main captions are small
+    }
     \centering
-    \captionsetup[subfigure]{labelformat=empty}
-    \begin{subfigure}{0.32\textwidth}
-        \raggedright
-        \includegraphics[width=0.8\linewidth]{figures/scene_mocapgs.png}
+
+    \begin{subfigure}{0.28\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/scene_mocapgs.png}
         \caption{MocapGS-Fixed}
     \end{subfigure}\hfill
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.28\textwidth}
         \centering
-        \includegraphics[width=0.8\linewidth]{figures/scene_3dgs.png}
+        \includegraphics[width=\linewidth]{figures/scene_3dgs.png}
         \caption{3DGS}
     \end{subfigure}\hfill
-    \begin{subfigure}{0.32\textwidth}
-        \raggedleft
-        \includegraphics[width=0.8\linewidth]{figures/scene_onthefly_nvs.png}
+    \begin{subfigure}{0.28\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/scene_onthefly_nvs.png}
         \caption{On-the-fly NVS}
     \end{subfigure}
 

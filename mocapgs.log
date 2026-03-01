@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.6.10)  1 MAR 2026 10:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.6.10)  1 MAR 2026 11:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -790,36 +790,36 @@ LaTeX Font Info:    Setting newtxttz sub-encoding to TS1/0 on input line 10.
 ) (./mocapgs.aux)
 \openout1 = `mocapgs.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for LS1/stix/m/n on input line 44.
-LaTeX Font Info:    Trying to load font information for LS1+stix on input line 44.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for LS1/stix/m/n on input line 45.
+LaTeX Font Info:    Trying to load font information for LS1+stix on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls1stix.fd
 File: ls1stix.fd 2015/04/17 v1.1.2-latex STIX LS1 font definitions
 )
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for LS2/stix/m/n on input line 44.
-LaTeX Font Info:    Trying to load font information for LS2+stix on input line 44.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for LS2/stix/m/n on input line 45.
+LaTeX Font Info:    Trying to load font information for LS2+stix on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls2stix.fd
 File: ls2stix.fd 2015/04/17 v1.1.2-latex STIX LS2 font definitions
 )
-LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    ... okay on input line 45.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count359
@@ -845,9 +845,9 @@ Package grfext Info: Graphics extension search list:
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-LaTeX Info: Command `\dddot' is already robust on input line 44.
-LaTeX Info: Command `\ddddot' is already robust on input line 44.
-Package hyperref Info: Link coloring ON on input line 44.
+LaTeX Info: Command `\dddot' is already robust on input line 45.
+LaTeX Info: Command `\ddddot' is already robust on input line 45.
+Package hyperref Info: Link coloring ON on input line 45.
  (./mocapgs.out) (./mocapgs.out)
 \@outlinefile=\write4
 \openout4 = `mocapgs.out'.
@@ -894,69 +894,69 @@ Package caption Info: End \AtBeginDocument code.
 \verbatim@out=\write5
 \openout5 = `mocapgs.abs'.
 
-LaTeX Font Info:    Trying to load font information for LS1+stixscr on input line 91.
+LaTeX Font Info:    Trying to load font information for LS1+stixscr on input line 92.
 (/usr/share/texlive/texmf-dist/tex/latex/stix/ls1stixscr.fd
 File: ls1stixscr.fd 2015/04/17 v1.1.2-latex STIX script LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixex on input line 91.
+LaTeX Font Info:    Trying to load font information for LS2+stixex on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls2stixex.fd
 File: ls2stixex.fd 2015/04/17 v1.1.2-latex STIX extentions LS2 font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 91.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 91.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixfrak on input line 91.
+LaTeX Font Info:    Trying to load font information for LS1+stixfrak on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls1stixfrak.fd
 File: ls1stixfrak.fd 2015/04/17 v1.1.2-latex STIX fraktur LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixbb on input line 91.
+LaTeX Font Info:    Trying to load font information for LS1+stixbb on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls1stixbb.fd
 File: ls1stixbb.fd 2015/04/17 v1.1.2-latex STIX blackboard LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixcal on input line 91.
+LaTeX Font Info:    Trying to load font information for LS2+stixcal on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls2stixcal.fd
 File: ls2stixcal.fd 2015/04/17 v1.1.2-latex STIX calligraphic LS2 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixsf on input line 91.
+LaTeX Font Info:    Trying to load font information for LS1+stixsf on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls1stixsf.fd
 File: ls1stixsf.fd 2015/04/17 v1.1.2-latex STIX sans-serif LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixtt on input line 91.
+LaTeX Font Info:    Trying to load font information for LS2+stixtt on input line 92.
  (/usr/share/texlive/texmf-dist/tex/latex/stix/ls2stixtt.fd
 File: ls2stixtt.fd 2015/04/17 v1.1.2-latex STIX typewriter LS2 font definitions
 )
-Overfull \hbox (123.62721pt too wide) detected at line 91
+Overfull \hbox (123.62721pt too wide) detected at line 92
 []
  []
 
 (./mocapgs.abs)
 
-Package hyperref Warning: Ignoring empty anchor on input line 91.
+Package hyperref Warning: Ignoring empty anchor on input line 92.
 
 
-Package hyperref Warning: Ignoring empty anchor on input line 91.
+Package hyperref Warning: Ignoring empty anchor on input line 92.
 
 <thumbnails/cas-email.jpeg, id=7, 225.84375pt x 225.84375pt>
 File: thumbnails/cas-email.jpeg Graphic file (type jpg)
 <use thumbnails/cas-email.jpeg>
-Package pdftex.def Info: thumbnails/cas-email.jpeg  used on input line 91.
+Package pdftex.def Info: thumbnails/cas-email.jpeg  used on input line 92.
 (pdftex.def)             Requested size: 7.99838pt x 8.0pt.
-LaTeX Font Info:    Trying to load font information for T1+newtxtt on input line 91.
+LaTeX Font Info:    Trying to load font information for T1+newtxtt on input line 92.
 (/usr/share/texlive/texmf-dist/tex/latex/newtxtt/t1newtxtt.fd
 File: t1newtxtt.fd 2020/02/15 Font definitions for T1/newtxtt.
 )
 LaTeX Font Info:    Font shape `T1/newtxtt/m/n' will be
-(Font)              scaled to size 8.0pt on input line 91.
+(Font)              scaled to size 8.0pt on input line 92.
 
 
-Package hyperref Warning: Ignoring empty anchor on input line 91.
+Package hyperref Warning: Ignoring empty anchor on input line 92.
 
-LaTeX Font Info:    Trying to load font information for T1+cmss on input line 116.
+LaTeX Font Info:    Trying to load font information for T1+cmss on input line 117.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}
@@ -964,51 +964,51 @@ File: t1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtxtt/txttAec.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./thumbnails/cas-email.jpeg>]
 LaTeX Font Info:    Font shape `T1/newtxtt/b/n' will be
-(Font)              scaled to size 10.0pt on input line 148.
+(Font)              scaled to size 10.0pt on input line 149.
 
-Underfull \hbox (badness 1424) in paragraph at lines 162--163
+Underfull \hbox (badness 1424) in paragraph at lines 163--164
 []\T1/stix/m/n/10 This sec-tion pro-vides a com-pre-hen-sive overview of
  []
 
 
-Overfull \hbox (1.86044pt too wide) in paragraph at lines 162--163
+Overfull \hbox (1.86044pt too wide) in paragraph at lines 163--164
 \T1/stix/m/n/10 era^^UMocap sys-tem. Fig-ure [][]1[][] il-lus-trates the com-plete pipeline.
  []
 
 <figures/methodology_overview.pdf, id=50, 3163.31813pt x 1317.42188pt>
 File: figures/methodology_overview.pdf Graphic file (type pdf)
 <use figures/methodology_overview.pdf>
-Package pdftex.def Info: figures/methodology_overview.pdf  used on input line 166.
+Package pdftex.def Info: figures/methodology_overview.pdf  used on input line 167.
 (pdftex.def)             Requested size: 494.50888pt x 205.94717pt.
 LaTeX Font Info:    Font shape `T1/newtxtt/b/n' will be
-(Font)              scaled to size 9.0pt on input line 167.
+(Font)              scaled to size 9.0pt on input line 168.
 [2]
 <figures/rigid_body.png, id=78, 1541.76pt x 1156.32pt>
 File: figures/rigid_body.png Graphic file (type png)
 <use figures/rigid_body.png>
-Package pdftex.def Info: figures/rigid_body.png  used on input line 176.
+Package pdftex.def Info: figures/rigid_body.png  used on input line 177.
 (pdftex.def)             Requested size: 238.25444pt x 178.68079pt.
  [3 <./figures/methodology_overview.pdf> <./figures/rigid_body.png>]
 <figures/transformations.pdf, id=200, 3906.34406pt x 1151.80313pt>
 File: figures/transformations.pdf Graphic file (type pdf)
 <use figures/transformations.pdf>
-Package pdftex.def Info: figures/transformations.pdf  used on input line 195.
+Package pdftex.def Info: figures/transformations.pdf  used on input line 196.
 (pdftex.def)             Requested size: 494.50888pt x 145.80284pt.
  [4 <./figures/transformations.pdf>] [5]
 <figures/buddha_montage.png, id=511, 5692.26625pt x 949.5475pt>
 File: figures/buddha_montage.png Graphic file (type png)
 <use figures/buddha_montage.png>
-Package pdftex.def Info: figures/buddha_montage.png  used on input line 376.
+Package pdftex.def Info: figures/buddha_montage.png  used on input line 377.
 (pdftex.def)             Requested size: 494.50888pt x 82.48535pt.
 <figures/robot_montage.png, id=512, 5691.2625pt x 949.5475pt>
 File: figures/robot_montage.png Graphic file (type png)
 <use figures/robot_montage.png>
-Package pdftex.def Info: figures/robot_montage.png  used on input line 378.
+Package pdftex.def Info: figures/robot_montage.png  used on input line 379.
 (pdftex.def)             Requested size: 494.50888pt x 82.49985pt.
 <figures/photolab_montage.png, id=513, 5675.2025pt x 949.5475pt>
 File: figures/photolab_montage.png Graphic file (type png)
 <use figures/photolab_montage.png>
-Package pdftex.def Info: figures/photolab_montage.png  used on input line 380.
+Package pdftex.def Info: figures/photolab_montage.png  used on input line 381.
 (pdftex.def)             Requested size: 494.50888pt x 82.73166pt.
  [6] [7 <./figures/buddha_montage.png> <./figures/robot_montage.png> <./figures/photolab_montage.png>]
 <figures/buddha_montage_3d.png, id=543, 4546.9875pt x 719.68875pt>
@@ -1026,33 +1026,33 @@ File: figures/cbar.png Graphic file (type png)
 <use figures/cbar.png>
 Package pdftex.def Info: figures/cbar.png  used on input line 475.
 (pdftex.def)             Requested size: 197.80052pt x 10.43813pt.
-<figures/photolab_trajectories.png, id=551, 1283.778pt x 542.025pt>
+<figures/photolab_trajectories.png, id=551, 1553.148pt x 542.025pt>
 File: figures/photolab_trajectories.png Graphic file (type png)
 <use figures/photolab_trajectories.png>
 Package pdftex.def Info: figures/photolab_trajectories.png  used on input line 496.
-(pdftex.def)             Requested size: 494.50888pt x 208.78365pt.
+(pdftex.def)             Requested size: 494.50888pt x 172.57484pt.
 <figures/scene_mocapgs.png, id=552, 951.555pt x 952.55875pt>
 File: figures/scene_mocapgs.png Graphic file (type png)
 <use figures/scene_mocapgs.png>
-Package pdftex.def Info: figures/scene_mocapgs.png  used on input line 522.
-(pdftex.def)             Requested size: 158.24646pt x 158.40086pt.
+Package pdftex.def Info: figures/scene_mocapgs.png  used on input line 526.
+(pdftex.def)             Requested size: 138.46187pt x 138.6044pt.
 <figures/scene_3dgs.png, id=553, 937.5025pt x 935.495pt>
 File: figures/scene_3dgs.png Graphic file (type png)
 <use figures/scene_3dgs.png>
-Package pdftex.def Info: figures/scene_3dgs.png  used on input line 527.
-(pdftex.def)             Requested size: 158.24646pt x 157.90436pt.
+Package pdftex.def Info: figures/scene_3dgs.png  used on input line 531.
+(pdftex.def)             Requested size: 138.46187pt x 138.16273pt.
 <figures/scene_onthefly_nvs.png, id=554, 951.555pt x 952.55875pt>
 File: figures/scene_onthefly_nvs.png Graphic file (type png)
 <use figures/scene_onthefly_nvs.png>
-Package pdftex.def Info: figures/scene_onthefly_nvs.png  used on input line 532.
-(pdftex.def)             Requested size: 158.24646pt x 158.40086pt.
+Package pdftex.def Info: figures/scene_onthefly_nvs.png  used on input line 536.
+(pdftex.def)             Requested size: 138.46187pt x 138.6044pt.
 
-Overfull \hbox (4.0663pt too wide) in paragraph at lines 548--549
+Overfull \hbox (4.0663pt too wide) in paragraph at lines 552--553
 \T1/stix/m/n/10 cam-era move-ments, and re-strict-ing the com-par-i-son to datasets
  []
 
 [8 <./figures/buddha_montage_3d.png> <./figures/robot_montage_3d.png> <./figures/cbar.png>]
-Overfull \hbox (6.1497pt too wide) in paragraph at lines 551--552
+Overfull \hbox (6.1497pt too wide) in paragraph at lines 555--556
  []\T1/stix/m/it/11 Limitations.[] \T1/stix/m/n/10 Mo-capGS in-tro-duces ad-di-tional over-head com-
  []
 
@@ -1181,9 +1181,7 @@ Underfull \hbox (badness 1502) in paragraph at lines 133--137
 \T1/stix/m/n/8 li-gent Robots and Sys-tems, IEEE, Vilamoura-Algarve, Por-tu-gal.
  []
 
-[10]) [11
-
-] (./mocapgs.aux)
+) [10] (./mocapgs.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1192,18 +1190,18 @@ Package rerunfilecheck Info: File `mocapgs.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 28751 strings out of 474222
- 510555 string characters out of 5748733
+ 28750 strings out of 474222
+ 510548 string characters out of 5748733
  1963975 words of memory out of 5000000
  50379 multiletter control sequences out of 15000+600000
  694496 words of font info for 205 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,14n,131p,1618b,863s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/STIXGeneral-BoldItalic.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtxtt/newtxbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtxtt/newtxtt.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfso0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfsx0900.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathbb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathit-bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathrm-bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathtt.pfb>
-Output written on mocapgs.pdf (11 pages, 32494499 bytes).
+Output written on mocapgs.pdf (10 pages, 32532181 bytes).
 PDF statistics:
- 750 PDF objects out of 1000 (max. 8388607)
- 531 compressed objects within 6 object streams
- 100 named destinations out of 1000 (max. 500000)
+ 746 PDF objects out of 1000 (max. 8388607)
+ 528 compressed objects within 6 object streams
+ 99 named destinations out of 1000 (max. 500000)
  83 words of extra memory for PDF output out of 10000 (max. 10000000)
 
