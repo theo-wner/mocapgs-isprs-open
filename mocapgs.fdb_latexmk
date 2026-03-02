@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex mocapgs"] 1772358883.44533 "mocapgs.aux" "mocapgs.bbl" "mocapgs" 1772359850.17219 0
+["bibtex mocapgs"] 1772447858.744 "mocapgs.aux" "mocapgs.bbl" "mocapgs" 1772447863.76593 0
   "./cas-model2-names.bst" 1772024065.32887 31802 28b630660245c09f173aac55be552b29 ""
   "./references.bib" 1772024065.32987 48378 e952910567c08cf70fc3c9d3d992d259 ""
-  "mocapgs.aux" 1772359849.8496 13044 46e396b50023b89586d76d98997a6642 "pdflatex"
+  "mocapgs.aux" 1772447863.46968 13028 4ea0bdcd20e2bb0359fa2ea4c46c6a70 "pdflatex"
   (generated)
   "mocapgs.bbl"
   "mocapgs.blg"
   (rewritten before read)
-["pdflatex"] 1772359844.97137 "/home/tkapler/Documents/Studium/Masterarbeit/paper/mocapgs-isprs-open/mocapgs.tex" "mocapgs.pdf" "mocapgs" 1772359850.1724 0
+["pdflatex"] 1772447858.82712 "/home/tkapler/Documents/Studium/Masterarbeit/paper/mocapgs-isprs-open/mocapgs.tex" "mocapgs.pdf" "mocapgs" 1772447863.76611 0
   "/etc/texmf/web2c/texmf.cnf" 1749542239.43302 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/tkapler/Documents/Studium/Masterarbeit/paper/mocapgs-isprs-open/mocapgs.tex" 1772359844.726 50199 386116a2a0d19dd78dc057970969ee4b ""
+  "/home/tkapler/Documents/Studium/Masterarbeit/paper/mocapgs-isprs-open/mocapgs.tex" 1772447853.48015 50253 e29c40426747de4341fda07d78ac50e6 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtxtt/txttAec.enc" 1705419067 12640 5c77ac9a09863224fa4d495667f8e478 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc" 1388795362 7013 c55cc8669071ac14036c4a0c96c16202 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -259,11 +259,11 @@
   "figures/scene_mocapgs.png" 1772290154.26642 1082805 181152bf2ba26fe23ec74d4efc613904 ""
   "figures/scene_onthefly_nvs.png" 1772290154.26785 1081186 0b83f9d4bebbac7d726aa9b633551e8f ""
   "figures/transformations.pdf" 1772011832.66027 232159 57277d55eb5e229bd30f5f94f9f2e52e ""
-  "mocapgs.abs" 1772359845.543 1505 6484f0259d196407561e9efdac41734a "pdflatex"
-  "mocapgs.aux" 1772359849.8496 13044 46e396b50023b89586d76d98997a6642 "pdflatex"
-  "mocapgs.bbl" 1772358883.52835 14494 f44b59c44b1926009a0685eaf6ce9f5d "bibtex mocapgs"
-  "mocapgs.out" 1772359845.52645 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "mocapgs.tex" 1772359844.726 50199 386116a2a0d19dd78dc057970969ee4b ""
+  "mocapgs.abs" 1772447859.33632 1510 035f3811c907d303ea1694cb57ef1bc2 "pdflatex"
+  "mocapgs.aux" 1772447863.46968 13028 4ea0bdcd20e2bb0359fa2ea4c46c6a70 "pdflatex"
+  "mocapgs.bbl" 1772447858.82155 14494 f44b59c44b1926009a0685eaf6ce9f5d "bibtex mocapgs"
+  "mocapgs.out" 1772447859.32097 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "mocapgs.tex" 1772447853.48015 50253 e29c40426747de4341fda07d78ac50e6 ""
   "thumbnails/cas-email.jpeg" 1772024065.32987 8764 ae276cc9956197082d008c18ae4cbb28 ""
   (generated)
   "mocapgs.abs"

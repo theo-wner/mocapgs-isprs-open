@@ -81,7 +81,7 @@
 
 % Abstract
 \begin{abstract}
-Image-based online 3D mapping allows scenes to be reconstructed incrementally, with new images continuously integrated to provide direct feedback on the reconstructed scene. However, many online reconstruction methods, typically SLAM-applications, rely on image-based camera pose estimation, which is prone to drift and loop-closure errors. To address this issue, we present MocapGS, an online 3D reconstruction method that directly integrates accurate camera poses obtained from a Motion Capture system directly into a 3D Gaussian Splatting-based reconstruction pipeline. By decoupling pose estimation from scene reconstruction, MocapGS leverages externally provided, metrically accurate camera poses to improve robustness and global consistency. To enable this integration, a complete workflow is developed, including temporal synchronization between the camera and the Motion Capture system, camera calibration, hand-eye calibration, and online reconstruction from sequential image-pose pairs. The proposed method is evaluated on multiple datasets and compared to methods estimating poses from image data. Experimental results show that MocapGS yields more stable camera trajectories and improved reconstruction quality compared to such methods, particularly with respect to global consistency. The results demonstrate that Motion Capture can serve as a reliable primary source of camera poses for online 3D reconstruction, highlighting the potential of Motion Capture-driven reconstruction pipelines.
+Image-based online 3D mapping allows scenes to be reconstructed incrementally, with new images continuously integrated to provide direct feedback on the reconstructed scene. However, many online reconstruction methods, typically SLAM-applications, rely on image-based camera pose estimation, which is prone to drift and loop-closure errors. To address this issue, we present MocapGS, an online 3D reconstruction method that directly integrates accurate camera poses obtained from a Motion Capture system into a 3D Gaussian Splatting-based reconstruction pipeline. By decoupling pose estimation from scene reconstruction, MocapGS leverages externally provided, metrically accurate camera poses to improve robustness and global consistency. To enable this integration, a complete workflow is developed, including temporal synchronization between the camera and the Motion Capture system, camera calibration, hand-eye calibration, and online reconstruction from sequential image-pose pairs. The proposed method is evaluated on multiple datasets and compared to methods estimating poses from image data. Experimental results show that MocapGS yields more stable camera trajectories and improved reconstruction quality compared to purely image-based methods, particularly with respect to global consistency. The results demonstrate that Motion Capture can serve as a reliable primary source of camera poses for online 3D reconstruction, highlighting the potential of Motion Capture-driven reconstruction pipelines.
 \end{abstract}
 
 % Keywords
@@ -97,7 +97,7 @@ Image-based 3D reconstruction has become a fundamental technology in computer vi
 
 Classical 3D reconstruction pipelines are predominantly batch-based. Methods such as Structure from Motion (SfM) \cite{schonberger_structure--motion_2016} estimate camera poses, intrinsic parameters, and sparse geometry jointly from a complete set of images, followed by a densification step using Multi-view Stereo (MVS) \cite{schonberger_pixelwise_2016} or learning-based representations, like 3D Gaussian Splatting (3DGS) \cite{kerbl_3d_2023}. While these approaches can achieve good reconstruction quality, they fundamentally require all images to be available in advance. As a consequence, they are unsuitable for scenarios where image data is acquired sequentially and where immediate feedback is desired.
 
-Incremental reconstruction approaches address these issues. Simultaneous Localization and Mapping (SLAM)-methods \cite{cadena_past_2016}  estimate camera poses and scene structure on-the-fly, enabling online operation and continuous map expansion as new images arrive. More recently, learning-based scene representations such as 3DGS have been adapted to online image acquisition \cite{meuleman_--fly_2025}. These methods make it possible to visualize a scene in real-time while it is being reconstructed, providing immediate feedback and enabling adaptive data acquisition.
+Incremental reconstruction approaches address these issues. Simultaneous Localization and Mapping (SLAM)-methods \cite{cadena_past_2016}  estimate camera poses and scene structure on-the-fly, enabling online operation and continuous map expansion as new images arrive. More recently, learning-based scene representations such as 3DGS have been adapted to online image acquisition, like for example On-the-fly NVS~\cite{meuleman_--fly_2025}. These methods make it possible to visualize a scene in real-time while it is being reconstructed, providing immediate feedback and enabling adaptive data acquisition.
 
 Despite these advantages, online approaches typically estimate camera poses sequentially from image data alone. As a result, they are prone to drift and loop-closure errors, which can accumulate over time and lead to globally inconsistent reconstructions.
 
@@ -113,7 +113,7 @@ This thesis aims to fill this gap by introducing \emph{MocapGS}, a method that i
 \item 3D Mesh Extraction.
 \end{enumerate}  
 
-The main contributions of this work are threefold. First, we present the proposed workflow for integrating Mocap-based pose estimation into an online 3DGS reconstruction pipeline. Second, we evaluate the accuracy of the temporal synchronization and calibration procedures. Third, we assess the reconstruction quality and compare our approach against standard 3DGS as well as an online method that estimates camera poses solely from image data.
+The main contributions of this work are threefold. First, we present the proposed workflow for integrating Mocap-based pose estimation into an online 3DGS reconstruction pipeline. Second, we evaluate the accuracy of the temporal synchronization and calibration procedures. Third, we assess the reconstruction quality and compare our approach against standard 3DGS as well as against On-the-fly NVS, estimating camera poses solely from image data.
 
 We find that by decoupling pose estimation from scene optimization, MocapGS combines the online visualization and incremental processing capabilities of modern 3DGS-based methods with the robustness and global consistency of Mocap-based camera tracking. 
 
@@ -132,7 +132,7 @@ Online 3D reconstruction methods aim to process image data sequentially as it be
 
 Classical point-based methods such as SLAM estimate camera poses on-the-fly while incrementally building a map of the environment. More recent learning-based methods extend this idea to neural or hybrid scene representations. Approaches such as MonoGS \cite{matsuki_gaussian_2024}, WildGS-SLAM \cite{zheng_wildgs-slam_2025}, or On-the-fly NVS \cite{meuleman_--fly_2025} enable incremental reconstruction and real-time rendering while estimating camera poses directly from incoming images.
 
-A major advantage of online methods is the ability to visualize the scene in real time and to actively densify under-reconstructed regions. However, pose estimation is sequential and therefore depends on previously estimated poses. As a result, these methods are susceptible to drift and loop-closure errors, which can lead to globally inconsistent reconstructions.
+A major advantage of online methods is the ability to visualize the scene in real-time and to actively densify under-reconstructed regions. However, pose estimation is sequential and therefore depends on previously estimated poses. As a result, these methods are susceptible to drift and loop-closure errors, which can lead to globally inconsistent reconstructions.
 
 \subsection{Camera Tracking with Motion Capture}\label{ssec:related_work:camera_tracking}
 Mocap systems provide an alternative source of camera pose information. By rigidly mounting a camera to a set of tracked markers, the pose of the camera can be recovered in real-time with high accuracy after hand-eye calibration. Such systems yield globally consistent poses and are not affected by drift or loop-closure failures.
@@ -155,12 +155,12 @@ Following the standard formulation in projective geometry~\cite{hartley_multiple
 \end{equation}
 where $\Matrix{R} \in \mathbb{R}^{3 \times 3}$ denotes a rotation matrix and $\Vector{t} \in \mathbb{R}^3$ a translation vector. Throughout this paper, bold, capital, monospaced symbols (e.g., $\Matrix{E}$, $\Matrix{T}$) are used to denote homogeneous transformation matrices representing poses.
 
-The mapping from an arbitrary pose parameterization $\Vector{e}$ (e.g. Euler angles) to its associated homogeneous transformation matrix is denoted by $\Matrix{T}(\Vector{e})$.
+The mapping from an arbitrary pose parameterization $\Vector{e}$ (e.g. Euler angles) to its associated homogeneous transformation matrix is denoted by $\Matrix{E}=\Matrix{T}(\Vector{e})$.
 
 To describe the relative pose between two coordinate systems, the notation $\TMatrix{A}{T}{B}$ is used. This denotes the pose of coordinate system $\mathrm{B}$ relative to coordinate system $\mathrm{A}$.
 
 \section{Methodology}\label{sec:methodology}
-This section provides a comprehensive overview of the methodology employed in this work. It systematically describes the proposed workflow for performing online 3D reconstruction using a synchronized and calibrated camera–Mocap system. Figure~\ref{fig:methodology_overview} illustrates the complete pipeline. Each component of the workflow is explained in detail throughout the subsequent sections.
+This section provides a comprehensive overview of the methodology employed in this work. It systematically describes the proposed workflow for performing online 3D reconstruction using a synchronized and calibrated camera-Mocap system. Figure~\ref{fig:methodology_overview} illustrates the complete pipeline. Each component of the workflow is explained in detail throughout the subsequent sections.
 
 \begin{figure*}
 	\centering
@@ -170,12 +170,12 @@ This section provides a comprehensive overview of the methodology employed in th
 \end{figure*}
 
 \subsection{Definition of a Rigid Body}\label{ssec:methodology:rigid_body}
-To enable camera pose tracking with a Mocap system, we attach a camera rigidly to a fixed set of Mocap markers, which is depicted in Figure~\ref{fig:rigid_body}. These markers define a rigid body that can be tracked by the Mocap system. To maintain the analogy to robotics, in the following, we refer to the rigid body as \emph{tool}. The pose of this tool coordinate system (TCS) can continously be tracked by the Mocap system. It differs from the pose of the camera coordinate system (CCS), that we are interested in, by an unknown pose $\TMatrix{C}{T}{T}$, which we call \emph{hand-eye pose}.
+To enable camera pose tracking with a Mocap system, we attach a camera rigidly to a fixed set of Mocap markers, which is depicted in Figure~\ref{fig:rigid_body}. These markers define a rigid body that can be tracked by the Mocap system. To maintain the analogy to robotics, in the following, we refer to the rigid body as \emph{tool}. The pose of this tool coordinate system (TCS) relative to the Mocap base coordinate system (BCS) can continously be tracked by the Mocap system. It differs from the pose of the camera coordinate system (CCS) relative to the BCS, that we are interested in, by an unknown pose $\TMatrix{C}{T}{T}$, which we call \emph{hand-eye pose}.
 
 \begin{figure}[]
     \centering
     \includegraphics[width=\linewidth]{figures/rigid_body.png}
-    \caption{Hand-held rigid body connecting the camera to spatially fixed set of Mocap markers.}
+    \caption{Hand-held rigid body connecting the camera to a spatially fixed set of Mocap markers.}
     \label{fig:rigid_body}
 \end{figure}
 
@@ -186,10 +186,10 @@ Our goal therefore is to determine the latency difference $\Delta t$ between the
 
 Common synchronization events for heterogeneous sensor setups include LED flashes or abrupt motions. However, the temporal resolution of such events is fundamentally limited by the camera frame rate, as they can typically only be detected as present or absent within individual image frames. This limits the achievable temporal precision.
 
-To overcome this limitation, we instead exploit the continuous vertical motion of a Mocap marker as a synchronization signal. The marker's position is directly available from the Mocap data and can also be reliably segmented in the camera stream. From both modalities, we extract time series describing the marker's vertical movement: the vertical coordinate from the Mocap system and the row coordinate of the segmented marker center in the image sequence. We then fit a cubic spline to each time series to obtain a smooth, continuous representation of the motion. By determining the local maxima of the interpolated trajectories, we estimate the precise time points at which the marker reaches its maximum height with sub-frame accuracy. These time instants are subsequently used as high-precision synchronization events.
+To overcome this limitation, we instead exploit the up-and-down movement of a Mocap marker as a synchronization signal. The marker's position is directly available from the Mocap data and can also be reliably segmented in the camera stream. From both modalities, we extract time series describing the marker's vertical movement: the vertical coordinate from the Mocap data and the row coordinate of the segmented marker center in the image data. We then fit a cubic spline to each time series to obtain a smooth, continuous representation of the motion. By determining the local maxima of the interpolated trajectories, we estimate the precise time points at which the marker reaches its maximum height with sub-frame accuracy. These time instants are finally used as high-precision synchronization events.
 
 \subsection{Camera Calibration}\label{ssec:methodology:cc}
-After temporally synchronizing the two systems, the camera calibration is performed. This involves estimating the camera's intrinsic parameter vector $\Vector{i}$, as well as the extrinsic parameters for each calibration image $\Vector{e}_i$. We perform camera calibration using multiple images of a checkerboard, which defines a world coordinate system (WCS). The extrinsic parameters $\Vector{e}_i$ to be estimated for each image describe the pose of the WCS relative to the CCS, so the corresponding homogenous transform is denoted as $\left(\TMatrix{C}{T}{W}\right)_i=\Matrix{T}\left(\Vector{e}_i\right)$. Our camera calibration procedure is based on OpenCV~\cite{bradski_g_opencv_2000} and internally consists of an initial parameter estimation followed by a nonlinear refinement.
+After temporally synchronizing the two systems, the camera is calibrated. This involves estimating the camera's intrinsic parameter vector $\Vector{i}$, as well as the extrinsic parameters for each calibration image $\Vector{e}_i$. We perform camera calibration using multiple images of a checkerboard, which defines a world coordinate system (WCS). The extrinsic parameters $\Vector{e}_i$ to be estimated for each image describe the pose of the WCS relative to the CCS, so the corresponding homogenous transform is denoted as $\left(\TMatrix{C}{T}{W}\right)_i=\Matrix{T}\left(\Vector{e}_i\right)$. Our camera calibration procedure is based on OpenCV~\cite{bradski_g_opencv_2000} and internally consists of an initial parameter estimation followed by a nonlinear refinement.
 
 \begin{figure*}
 	\centering
@@ -199,9 +199,9 @@ After temporally synchronizing the two systems, the camera calibration is perfor
 \end{figure*}
 
 \paragraph{Initial Parameter Estimation.}
-For estimating initial parameters, the method of Zhang~\cite{zhang_flexible_2000} is used. Zhang models the projection of a 3D point in the WCS onto the 2D Image Coordinate System (ICS) through the pinhole camera. This allows for a linear model formulation using homogenous coordinates. The model parameters, namely the intrinsic parameters of the pinhole camera $\Vector{i} = \left(f_x, f_y, c_x, c_y\right)$ and the extrinsic parameters of each image $\Vector{e}_i$, can then linearly be determined.
+For estimating initial parameters, we use the method of Zhang~\cite{zhang_flexible_2000}. Zhang models the projection of a 3D point in the WCS onto the 2D Image Coordinate System (ICS) through the pinhole camera. This allows for a linear model formulation using homogenous coordinates. The model parameters, namely the intrinsic parameters of the pinhole camera $\Vector{i} = \left(f_x, f_y, c_x, c_y\right)$ and the extrinsic parameters of each image $\Vector{e}_i$, can then linearly be determined.
 
-\paragraph{Nonlinear Refinemant.}
+\paragraph{Nonlinear Refinement.}
 In the following stage, the linearly estimated parameters are refined via nonlinear optimization. Therefore, the camera model is not constrained to linearity and can thus be extended to incorporate lens distortions. We choose a polynomial camera model using two radial distortion coefficients $K_1$ and $K_2$ and two decentering distortion coefficients $P_1$ and $P_2$. 
 
 Collecting all parameters, we define the vector
@@ -212,17 +212,17 @@ which contains all unknowns to be optimized. The distortion parameters $K_1, K_2
 \begin{equation}
     \label{eq:repr_error_ics}
     d_{\mathrm{CC}}(\boldsymbol{\theta}) = \sum_{k=1}^{n_o} \sum_{j=1}^{n_m}
-        \left\| \Vector{m}_{j,k} - \boldsymbol{\pi}\!\left( \Vector{M}_j, \boldsymbol{\theta} \right) \right\|_2^2 
+        \left\| \Vector{m}_{j,k} - \boldsymbol{\pi}\!\left( \Vector{M}_j, \boldsymbol{\theta} \right) \right\|_2
         \;\longrightarrow\; \mathrm{min},
 \end{equation}
 where $\Vector{m}_{j,k}$ denotes the observed 2D ICS coordinate of the $j$-th corner in the $k$-th image. $\Vector{M}_j$ denotes the corresponding 3D WCS coordinate, which is projected into the ICS with the projection $\boldsymbol{\pi}$. The function $d_{\mathrm{CC}}(\boldsymbol{\theta})$ is commonly referred to as the reprojection error, which we minimize using the Levenberg-Marquardt method~\cite{marquardt_algorithm_1963}. After optimization, the reprojection error~\eqref{eq:repr_error_ics} typically yields a residual value of $d_{\mathrm{CC}}\approx 0.5\,\mathrm{px}$ with our used setup.
 
-\subsection{Hand-eye Calibration}\label{ssec:methodology:hec}
-During the acquisition of the calibration dataset, we not only capture calibration images but also record the corresponding tool pose from the Mocap system for each image, synchronized via $\Delta t$. This allows us to perform a hand-eye calibration.
+\subsection{Hand-Eye Calibration}\label{ssec:methodology:hec}
+During the acquisition of the calibration dataset, we not only capture calibration images but also record the corresponding tool pose $\TMatrix{T}{T}{B}$ from the Mocap system for each image, synchronized via $\Delta t$. This allows us to perform a hand-eye calibration.
 
-Hand-eye calibration refers to the determination of the relative pose between a robot's end effector (tool) and a camera that is rigidly mounted to it~\cite{daniilidis_hand-eye_1999}. Establishing this relationship allows observations made in the CCS to be transformed into the TCS and subsequently into the robot base coordinate system (BCS).
+Hand-eye calibration refers to the determination of the relative pose between a robot's end effector (tool) and a camera that is rigidly mounted to it~\cite{daniilidis_hand-eye_1999}. Establishing this relationship allows observations made in the CCS to be transformed into the TCS and subsequently into the BCS.
 
-In our case, we want to use hand-eye calbration to estimate the relative pose bewtween the CCS and the TCS, which can be tracked with the Mocap system. This hand-eye pose $\TMatrix{C}{T}{T}$ then allows the tool poses to be corrected, retrieving the camera pose which can then be used for the online 3D reconstruction. Figure~\ref{fig:transformations} illustrates the relevant coordinate systems and transformations in this context. As for the camera calibration, our hand-eye calibration procedure is based on OpenCV and consists of an initial parameter estimation followed by a nonlinear refinement.
+In our case, we want to use hand-eye calbration to estimate the relative pose bewtween the CCS and the TCS, which can be tracked with the Mocap system. This hand-eye pose $\TMatrix{C}{T}{T}$ then allows the tool pose $\TMatrix{T}{T}{B}$ to be corrected, retrieving the camera pose $\TMatrix{C}{T}{B}$ which can then be used for the online 3D reconstruction. Figure~\ref{fig:transformations} illustrates the relevant coordinate systems and transformations in this context. As for the camera calibration, our hand-eye calibration procedure is based on OpenCV and consists of an initial parameter estimation followed by a nonlinear refinement.
 
 \paragraph{Initial Parameter Estimation.}
 The linear approach for estimating initial parameters is based on solving the fundamental equation
@@ -259,13 +259,13 @@ which represent a minimal parameterization of the hand-eye pose~$\Matrix{X}=\TMa
                     \boldsymbol{\pi}\!\left(
                         \Vector{M}_{j,k}, \Vector{i}
                     \right)
-                \right\|_2^2
+                \right\|_2
             \;\longrightarrow\; \min, \\
         \Vector{M}_{j,k} &= \Matrix{T}(\Vector{x})\left(\TMatrix{T}{T}{B}\right)_k\Matrix{T}(\Vector{y})^{-1}
                         \Vector{M}_j,
     \end{split}
 \end{equation}
-where $\Vector{m}_{j,k}$ denotes the observed 2D image coordinate of the $j$-th calibration point in the $k$-th image. $\Vector{M}_j$ is the corresponding homogenous 3D WCS coordinate, which is transformed to the CCS of the $k$-th image through the transformation chain illustrated in Figure~\ref{fig:transformations}, yielding $\Vector{M}_{j,k}$. $\Vector{M}_{j,k}$ is then projected into the image via the projection function~$\boldsymbol{\pi}$ using the intrinsic camera parameters~\Vector{i}. The reprojection error~\eqref{eq:hec_repr_error_ics} is minimized using the Levenberg-Marquardt algorithm~\cite{marquardt_algorithm_1963}, yielding optimal estimates for both the hand-eye pose~\Matrix{X} and the base-world pose~\Matrix{Y}. After optimization, the reprojection error~\eqref{eq:hec_repr_error_ics} typically yields a residual value of $d_{\mathrm{HEC}}\approx 1.5\,\mathrm{px}$ with our used setup.
+where $\Vector{m}_{j,k}$ denotes the observed 2D image coordinate of the $j$-th calibration point in the $k$-th image. $\Vector{M}_j$ is the corresponding homogenous 3D WCS coordinate, which is transformed to the CCS of the $k$-th image through the transformation chain illustrated in Figure~\ref{fig:transformations}, yielding $\Vector{M}_{j,k}$. $\Vector{M}_{j,k}$ is then projected into the image via the projection function~$\boldsymbol{\pi}$ using the intrinsic camera parameters~\Vector{i}. The reprojection error~\eqref{eq:hec_repr_error_ics} is minimized using the Levenberg-Marquardt algorithm, yielding optimal estimates for both the hand-eye pose~\Matrix{X} and the base-world pose~\Matrix{Y}. After optimization, the reprojection error~\eqref{eq:hec_repr_error_ics} typically yields a residual value of $d_{\mathrm{HEC}}\approx 1.5\,\mathrm{px}$ with our used setup.
 
 \subsection{Online 3D Reconstruction}\label{ssec:methodology:online_3d_reconstruction}
 At this stage, the following quantities are available from the preceding synchronization and calibration procedure:
@@ -283,7 +283,7 @@ The shifted and undistorted image can then, together with its pose $\TMatrix{C}{
 
 As a baseline for our reconstruction algorithm, we use the method On-the-fly NVS~\cite{meuleman_--fly_2025}. This approach already handles incremental 3DGS, as well as initial camera pose and intrinsic parameter estimation and their refinement in the 3DGS optimization.
 
-Our goal therefore is to streamline this baseline approach by eliminating the initial camera pose and intrinsic parameter estimation and replacing those by our well-known intrinsic parameter vector $\Vector{i}$ and on-the-fly acquired camera pose $\TMatrix{C}{T}{B}$. This enables us to perform online, incremental 3D reconstruction using 3DGS, already in the metric BCS. 
+Our goal therefore is to streamline this baseline approach by eliminating the initial camera pose and intrinsic parameter estimation and replacing those by our well-known intrinsic parameter vector $\Vector{i}$ and on-the-fly acquired camera pose $\TMatrix{C}{T}{B}$. This enables us to perform online, incremental 3D reconstruction using 3DGS in the metric BCS. 
 
 To investigate whether additional pose refinement is beneficial, we implement and evaluate three different variants. We refer to these methods as follows:
 
@@ -294,7 +294,7 @@ To investigate whether additional pose refinement is beneficial, we implement an
 \end{enumerate}
 
 \subsection{3D Mesh Extraction}\label{ssec:methodology:mesh_extraction}
-After completing the online 3DGS-based 3D reconstruction, we perform an offline surface extraction step to recover the explicit geometry of the observed scene or object. For this purpose, we adopt the efficient mesh extraction pipeline proposed in SuGaR~\cite{guedon_sugar_2024}, which is straightforward to integrate with a previously trained Gaussian representation.
+After completing the online 3DGS-based 3D reconstruction, we perform an offline surface extraction step to recover the explicit geometry of the observed scene or object. For this purpose, we adopt the efficient mesh extraction pipeline proposed in SuGaR~\cite{guedon_sugar_2024}, which is straightforward to integrate with a previously trained 3DGS representation.
 
 SuGaR extracts surface points by identifying locations of equal density within the scene. Specifically, multiple depth maps are rendered from different viewpoints, and pixels are sampled from each depth map. For every corresponding camera ray, the method determines whether a point with a predefined density value exists along the ray and, if so, computes its 3D position. The collection of these points yields a sparse sampling of the underlying surface. Finally, Poisson surface reconstruction~\cite{kazhdan_poisson_2006} is applied to the extracted surface points to generate a triangular mesh.
 
@@ -313,18 +313,18 @@ MocapGS is also an online method and leverages externally provided and calibrate
 \subsection{Datasets}
 We evaluate all methods on three reconstruction datasets we captured using our Mocap setup:
 \paragraph{Buddha.}
-This dataset consists of 411 RGB images capturing a Buddha statue from multiple concentric viewpoints, each with its corresponding Mocap pose. The object exhibits both coarse geometric structure and fine-grained surface details, making it well suited for quantitative 3D evaluation. A highly accurate 3D ground truth of the statue is available in the form of a dense mesh acquired using a structured-light scanning system, for details refer to \cite{petrovska_geometric_2023, petrovska_vision_2024}.
+This dataset consists of 411 RGB images capturing a Buddha statue from multiple concentric viewpoints, each with its corresponding Mocap pose. The object exhibits both coarse geometric structure and fine-grained surface details, rendering it suitable for quantitative 3D evaluation. A highly accurate 3D ground truth of the statue is available in the form of a dense mesh acquired using a structured-light scanning system, for details refer to \cite{petrovska_geometric_2023, petrovska_vision_2024}.
 
 \paragraph{Robot.} 
 This dataset consists of 409 RGB images, each with an associated Mocap pose. It captures a working table setup that includes a robot arm, controller, monitor, computers, and various cables. The scene is captured from multiple concentric viewpoints. This dataset poses a particularly challenging reconstruction scenario due to its complex and heterogeneous geometry, as well as the presence of thin structures and significant clutter. A 3D ground truth of the working table is available in the form of a dense point cloud acquired using a Zoller+Fröhlich Imager 5016 laser scanner.
 
 \paragraph{PhotoLab.} 
-This dataset consists of 176 RGB images capturing the room in which the Mocap system is installed. Each image is accompanied by its corresponding Mocap pose. Unlike the previous datasets, the scene is captured in an eccentric, inside-out manner: instead of observing a single object from the outside, the camera traverses the room along a looped trajectory, capturing the surrounding environment. This dataset is particularly challenging, especially for image-based pose estimation methods, as many visual features are only observed from a limited number of viewpoints. A 3D ground truth of the room is not available.
+This dataset consists of 176 RGB images capturing the room in which the Mocap system is installed, each with an corresponding Mocap pose. Unlike the previous datasets, the scene is captured in an eccentric, inside-out manner: instead of observing a single object from the outside, the camera traverses the room along a looped trajectory, capturing the surrounding environment. This dataset is particularly challenging, especially for image-based pose estimation methods, as many visual features are only observed from a limited number of viewpoints. A 3D ground truth of the room is not available.
 
 \subsection{General Considerations}
 In contrast to COLMAP and On-the-fly NVS, MocapGS is not constrained to a minimum image overlap for pose estimation. Despite this advantage of MocapGS over COLMAP and On-the-fly NVS, all datasets provide sufficient image overlap, enabling COLMAP and On-the-fly NVS to estimate camera poses for each image.
 
-MocapGS uses the Mocap poses as input, while \\COLMAP+3DGS and On-the-fly NVS only use the captured images as input and infer the pose solely from image data. COLMAP+3DGS and On-the-fly NVS therefore operate with an unknown scale factor, while MocapGS is able to operate in metric units due to the calibrated Mocap system.
+MocapGS uses images and Mocap poses as input, while \\COLMAP + 3DGS and On-the-fly NVS only use the captured images as input and infer the pose solely from image data. COLMAP + 3DGS and On-the-fly NVS therefore operate with an unknown scale factor, while MocapGS is able to operate in metric units due to the calibrated Mocap system.
 
 \begin{table*}[t]
 \centering
@@ -404,7 +404,7 @@ COLMAP + 3DGS
         \centering
         MocapGS-RotOpt
     \end{minipage}
-    \caption{Test image that has not been used during training (left) and rendered scene for all corresponding methods. Buddha dataset on top, Robot dataset in the middle and PhotoLab dataset below.}
+    \caption{Test image that has not been used during training (left) and rendered scene for all corresponding methods. Buddha dataset on top, Robot dataset in the middle and PhotoLab dataset at the bottom.}
 	\label{fig:2d_results}
 \end{figure*}
 
@@ -413,7 +413,7 @@ COLMAP + 3DGS
 For assessing the rendering quality of the output 3DGS representation, we report the Peak Signal-to-Noise Ratio
 (PSNR) and Structural Similarity Index Measure (SSIM). These metrics are computed using ground truth image-pose pairs, that have not been used for training. 
 
-For COLMAP+3DGS, we use the camera poses estimated from COLMAP as ground truth pose.
+For COLMAP + 3DGS, we use the camera poses estimated from COLMAP as ground truth pose.
 
 On-the-fly NVS jointly optimizes camera poses and the scene representation. Consequently, a strict separation between scene representation and ground truth poses is less straightforward. In their evaluation protocol, the authors estimate the poses of test images during joint 3DGS optimization while keeping the scene representation fixed, resulting in no scene update for a given test image-pose pair.
 
@@ -483,9 +483,9 @@ Turning to the 3D evaluation metric $\sigma_{\mathrm{3D}}$ for the Buddha and Ro
 \end{figure*}
 
 \subsection{Qualitative Evaluation}
-Figure~\ref{fig:2d_results} shows one test view for each dataset. The ground truth image is depicted along with the rendered views generated from all compared methods from the repsective ground truth pose of the image. Overall, all methods produce visually compelling novel views, which is also reflected in reasonably high PSNR and SSIM values in Table~\ref{tab:reconstruction_results}. Noticable blur can only be observed on the PhotoLab dataset reconstructed by On-the-fly NVS. 
+Figure~\ref{fig:2d_results} shows one test view for each dataset. The ground truth image is depicted along with the rendered views generated from all compared methods from the respective ground truth pose of the image. Overall, all methods produce visually compelling novel views, which is also reflected in reasonably high PSNR and SSIM values in Table~\ref{tab:reconstruction_results}. Noticable blur can only be observed on the PhotoLab dataset reconstructed by On-the-fly NVS. 
 
-Figure~\ref{fig:3d_results} shows the generated 3D geometry for the Buddha and the Robot dataset. The 3D representations are colored according to their C2M distances to the ground truth. It becomes evident that 3DGS in combined with our employed mesh extraction strategy does not produce a compelling 3D mesh. All other methods procuce visually compelling meshes with an accuracy in the range of few millimeters.
+Figure~\ref{fig:3d_results} shows the generated 3D geometry for the Buddha and the Robot dataset. The 3D representations are colored according to their C2M distances to the ground truth. It becomes evident that 3DGS in combined with our employed mesh extraction strategy does not produce a satisfying 3D mesh. All other methods procuce visually compelling meshes with an accuracy in the range of few millimeters.
 
 Figure~\ref{fig:photolab_topview_comparison} presents a top-view comparison of the estimated camera poses for the PhotoLab scene. The MocapGS poses are directly provided by the Mocap system, the 3DGS poses are obtained via COLMAP, and the On-the-fly NVS poses are estimated online. MocapGS and 3DGS show close overall agreement, although 3DGS exhibits several outliers. In contrast, the On-the-fly NVS approach suffers from significant pose drift, resulting in a noticeable loop-closure error.
 
@@ -552,9 +552,9 @@ On-the-fly NVS, as an example of purely image-based methods, requires an initial
 Even when disregarding the facilitated capture setup of MocapGS, which allows for sudden and rapid camera movements, and restricting the comparison to datasets with sufficient overlap for On-the-fly NVS to operate, MocapGS proves to be substantially more robust. As shown in Figures~\ref{fig:photolab_topview_comparison} and~\ref{fig:photolab_scene}, the camera poses estimated by On-the-fly NVS often exhibit significant drift or are entirely incorrect, particularly for challenging trajectories such as those in the PhotoLab dataset. This behavior can be attributed to the absence of loop closure in On-the-fly NVS. In contrast, MocapGS effectively exhibits no drift, as its pose estimates do not depend on previous observations but are instead provided continuously with high accuracy by the Mocap system. This design enables robust and stable scene reconstruction even under challenging and complex camera trajectories.
 
 \paragraph{Limitations.}
-MocapGS introduces additional overhead compared to the baseline on-the-fly NVS approach. The required synchronization and calibration procedures take approximately five minutes, representing only a modest time investment. However, the financial cost of the motion capture system is significant in comparison to the baseline setup, which requires only a standard camera.
+MocapGS introduces additional overhead compared to the baseline On-the-fly NVS approach. The required synchronization and calibration procedures take approximately five minutes, representing only a modest time investment. However, the financial cost of the Mocap system is significant in comparison to the baseline setup, which requires only a standard camera.
 
-Also, a limitation of the presented approach lies in the separation between reconstruction and surface extraction. While high-quality meshes can be obtained in a post-processing step, the 3DGS representation itself is not explicitly optimized for surface consistency.
+Also, a limitation of the presented approach lies in the separation between reconstruction and surface extraction. While 3D meshes can be obtained in a post-processing step, the 3DGS representation itself is not explicitly optimized for surface consistency.
 
 \paragraph{Future Work.}
 A promising direction for future work is to incorporate surface-aware constraints or loss terms directly into the MocapGS training process, encouraging Gaussians to align with surface structures during reconstruction. Such constraints could improve the quality of the extracted geometry and reduce the reliance on offline surface extraction.
